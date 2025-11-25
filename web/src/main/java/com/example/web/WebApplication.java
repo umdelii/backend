@@ -1,14 +1,13 @@
-package com.example.demo;
+package com.example.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class WebApplication {
 
-	// 먼저 이 친구를 run시키자(tomcat start)
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(WebApplication.class, args);
 	}
 
 }

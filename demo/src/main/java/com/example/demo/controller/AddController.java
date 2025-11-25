@@ -1,0 +1,16 @@
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+
+import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
+@Controller
+@Log4j2
+public class AddController {
+    @GetMapping("/exam3")
+    public void getExam3() {
+        log.info("exam3 페이지 호출");
+    }    
+}
