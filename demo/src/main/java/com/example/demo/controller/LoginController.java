@@ -37,7 +37,7 @@ public class LoginController {
     
 
     // ?no=1&name=홍길동
-    // @RequestParam = http 요청의 파라미터를 컨트롤러 메소드의 매개변수로 바인딩(연길)
+    // @RequestParam = http 요청의 파라미터를 컨트롤러 메소드의 매개변수로 바인딩(연결)
     @GetMapping("path")
     public String getMethodName(@RequestParam String param) {
         return new String();
