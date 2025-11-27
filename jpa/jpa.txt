@@ -1,0 +1,50 @@
+jpa 프로젝트 생성
+- spring web, lombok, thymeleaf, dev tools, validation
+- spring jpa, mysql
+
+데이터베이스 연동
+자바 + DB연동 => JDBC 
+여지껏 순수 연동시켜 insert,delete...했었다
+
+데이터베이스 작업을 쉽게 도와주는 라이브러리가 있다! 
+1. MyBatis
+2. ORM(Object Relational Mapping)
+    테이블 행 하나 == 객체 (개념)
+    --> ORM개념을 실제로 기술로 만들어낸것이 Hibernate
+    --> JPA(Java Persistence API) : java라는 언어에서 DB관련한 API
+
+entity 폴더: db 테이블과 연동하는 객체가 들어있는 폴더
+repository : 
+
+jpa entity 작성 시 불러오는 어노테이션
+@Entity == 이 클래스는 테이블과 연동되어 있음 
+    -> @Id 필수~
+    db의 create table과 같은 의미 
+@Id = pk(primary key)
+@Column(~~) = 내가 임의로 db 테이블안 컬럼의 옵션들을 지정할때 사용
+
+spring-boot-starter-test : 어플리케이션 테스트 라이브러리 포함
+ - Junit
+
+@springBootTest : spring boot test 클래스야
+테스트 클래스 내부에 작성하는 메소드 위에 무조건 @Test 붙여야함
+
+@AutoWired
+private StudentRepository StudentRepository
+
+스프링(부트) 프레임워크
+ => 개발자의 할 일 축소
+ => 객체 생성 => 사용
+    A obj = new A();
+    obj.method();
+ => 스프링이 대신 new해주니 나는 new 해야 할 객체를 알려주기(어노테이션)
+    @Controller, @Service, @Repository, @Component, ...
+ => 주입이 필요함 : 그게 바로 @AutoWired
+
+웹어플리케이션
+웹서버 + WAS(컨테이너(tomcat))
+
+tomcat 아래 지정된 폴더에 작성된 프로젝트 배포(.jar)
+
+프로그램이 돌아가는 ex. 코드수정을 해 -> 톰갯이 리로드해줘 -> gradle(build)이 배포(코드 update해줘,class jar로 묶어워등등 작업해주고해줘) 해줘 -> 실행 해줘
+./gradlew build

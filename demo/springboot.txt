@@ -142,3 +142,7 @@ layout.html : 전체 레이아웃 정의
     @NotNull
     @size
     @Pattern(정규식)
+
+@Pattern 정규식
+    ex. 아이디는 영어대문자 하나 포함, 숫자가능, 특수문자는 #$%만 허용해서 5~12자 사이
+    
