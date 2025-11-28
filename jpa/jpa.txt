@@ -48,3 +48,8 @@ tomcat 아래 지정된 폴더에 작성된 프로젝트 배포(.jar)
 
 프로그램이 돌아가는 ex. 코드수정을 해 -> 톰갯이 리로드해줘 -> gradle(build)이 배포(코드 update해줘,class jar로 묶어워등등 작업해주고해줘) 해줘 -> 실행 해줘
 ./gradlew build
+
+
+Entity 동작 확인!
+1. Repository 작성(interface 클래스명 extends JpaRepository)
+2. test 코드 작성 (test폴더에)
