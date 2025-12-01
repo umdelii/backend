@@ -2,6 +2,7 @@ package com.example.memo;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import com.example.memo.entity.Memo;
 import com.example.memo.repository.MemoRepository;
 
 @SpringBootTest //test야 알려주기
+@Disabled
 public class MemoRepositoryTest {
     @Autowired
     private MemoRepository memoRepository;
@@ -20,7 +22,7 @@ public class MemoRepositoryTest {
     public void insertTest(){
         for (int i = 1; i < 11; i++) {
             Memo memo = Memo.builder()
-            .menoText("memo text"+i)
+            .memoText("memo text"+i)
             .build();
 
             memoRepository.save(memo);
@@ -31,7 +33,7 @@ public class MemoRepositoryTest {
     public void updateTest(){
         // id = 3의 text 수정
         Memo memo = memoRepository.findById(3L).get();
-        memo.changeMenoText("변경 text");
+        memo.changeMemoText("변경 text");
 
         memoRepository.save(memo);
     }

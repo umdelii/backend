@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>Read</h1>
+    <form action="" method="post">
+      <div class="mb-3">
+        <label for="mno" class="form-label">Id</label>
+        <input
+          type="text"
+          class="form-control"
+          id="mno"
+          th:value="${dto.mno}"
+          name="mno"
+          readonly
+        />
+      </div>
+      <div class="mb-3">
+        <label for="memo_text" class="form-label">Text</label>
+        <textarea
+          class="form-control"
+          id="memo_text"
+          rows="3"
+          name="memo_text"
+          readonly
+        >
+[[${dto.memoText}]]</textarea
+        >
+      </div>
+      <a type="button" class="btn btn-outline-success" th:href="@{/memo/list}"
+        >List</a
+      >
+      <a
+        type="button"
+        class="btn btn-outline-primary"
+        th:href="@{/memo/modify(id=${dto.mno})}"
+        >Update</a
+      >
+    </form>
+  </div>
+</html>

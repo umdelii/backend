@@ -2,6 +2,7 @@ package com.example.memo.dto;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MemoDTO {
     private Long mno;
-    private String menoText;
+    @NotBlank(message = "Cannot allow blank")
+    private String memoText;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 }

@@ -1,0 +1,58 @@
+package com.example.student.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.example.student.dto.StudentDTO;
+import com.example.student.entity.Student;
+import com.example.student.repository.StudentRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class StudentService {
+    private final StudentRepository studentRepository;
+    private final ModelMapper modelMapper;
+
+    // service 클래스 목적 : crud 작업을 위한 repository 메소드 호출 후 받은 결과를 컨트롤러로 리턴
+    // crud 작업을 위한 메소드 호출
+    public String insert(StudentDTO dto){
+        // dto -> entity
+        Student student = modelMapper.map(dto, Student.class);
+        return studentRepository.save(student).getName();
+    }
+
+    public StudentDTO read(Long id){
+        Student student = studentRepository.findById(id).orElseThrow();
+        // entity -> dto
+        return modelMapper.map(student, StudentDTO.class);
+    }
+
+    public List<StudentDTO> readAll(){
+        // orderby 정렬
+        List<Student> result = studentRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        // entity -> dto
+        List<StudentDTO> list = new ArrayList<>();
+        for (Student student : result) {
+            list.add(modelMapper.map(student, StudentDTO.class));
+        }
+        return list;
+    }
+
+    public Long update(StudentDTO dto){
+        Student student = studentRepository.findById(dto.getId()).orElseThrow();
+
+        student.changeGrade(dto.getGrade());
+        student.changeName(dto.getName());
+        return studentRepository.save(student).getId();
+    }
+
+    public void delete(Long id){
+        studentRepository.deleteById(id);
+    }
+}

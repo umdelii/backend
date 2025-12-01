@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>List</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Text</th>
+          <th scope="col">Create date</th>
+          <th scope="col">Update date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="dto : ${list}">
+          <th scope="row" th:text="${dto.mno}"></th>
+          <td>
+            <!-- 하나의 메모에 링크달아 조회하기 -->
+            <!-- 하나의 메모 조회 /memo/read?id=1 -->
+            <!-- 하나의 메모 수정 /memo/modify?id=1 -->
+            <!-- 순서 1. 수정할 메모 가져오기 2. 수정 후 보내기 -->
+            <!-- ------------------------------- -->
+            <!-- 하나의 메모 삭제 (/memo/remove?id=1) -->
+            <!-- ------------------------------- -->
+            <!-- 새로운 메모(행) 삽입 (/memo/create) -->
+            <a
+              th:href="@{/memo/read(id=${dto.mno})}"
+              th:text="${dto.memoText}"
+            ></a>
+          </td>
+          <td
+            th:text="${#temporals.format(dto.createDate,'yyyy-MM-dd HH:mm')}"
+          ></td>
+          <td
+            th:text="${#temporals.format(dto.updateDate, 'yyyy-MM-dd HH:mm')}"
+          ></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <th:block layout:fragment="script">
+    <!-- 페이지별 javascript 작성 -->
+    <script th:inline="javascript">
+      let msg = [[${msg}]];
+      console.log(msg);
+      if (msg) {
+          Swal.fire({
+            title: msg,
+            icon: "success",
+            draggable: true,
+          });
+      }
+    </script>
+  </th:block>
+</html>

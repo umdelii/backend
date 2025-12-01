@@ -53,3 +53,6 @@ tomcat 아래 지정된 폴더에 작성된 프로젝트 배포(.jar)
 Entity 동작 확인!
 1. Repository 작성(interface 클래스명 extends JpaRepository)
 2. test 코드 작성 (test폴더에)
+
+스프링 컨테이너
+bean(객체)관리

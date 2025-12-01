@@ -28,7 +28,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Memo {
-    // 테이블(memotbl) 컬럼 : mno, meno_text, create_date, update_date
+    // 테이블(memotbl) 컬럼 : mno, memo_text, create_date, update_date
     // 클래스 필드명과 테이블 컬럼명을 일치시키느냐 아니냐
     // 아니라면?(@Column)
 
@@ -38,7 +38,7 @@ public class Memo {
     private Long mno;
 
     @Column(nullable = false)
-    private String menoText;
+    private String memoText;
 
     @CreatedDate
     private LocalDateTime createDate;
@@ -47,7 +47,7 @@ public class Memo {
     private LocalDateTime updateDate;
 
     // update method 만들기
-    public void changeMenoText(String menoText) {
-        this.menoText = menoText;
+    public void changeMemoText(String memoText) {
+        this.memoText = memoText;
     }
 }
