@@ -145,4 +145,8 @@ layout.html : 전체 레이아웃 정의
 
 @Pattern 정규식
     ex. 아이디는 영어대문자 하나 포함, 숫자가능, 특수문자는 #$%만 허용해서 5~12자 사이
+
+
+th:selected="${dto.grade.name()} == 'SOPHOMORE'" => thymeleaf가 해석해줌
+th:selected="${dto.grade.name() == 'SENIOR'}" => SpringEL이 해석해줌
     

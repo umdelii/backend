@@ -56,3 +56,5 @@ Entity 동작 확인!
 
 스프링 컨테이너
 bean(객체)관리
+
+junit => java test해주는 제일 유명한 test 라이브러리
