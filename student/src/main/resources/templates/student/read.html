@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>Read</h1>
+    <form action="" method="post" id="insert-form">
+      <div class="mb-3">
+        <label for="name">ID</label>
+        <input type="text" name="id" id="id" class="form-control" th:value="${dto.id}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="form-control" th:value="${dto.name}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="gender">Gender</label>
+        <input type="text" name="gender" id="gender" class="form-control" th:value="${dto.gender}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="addr">Address</label>
+        <input type="text" name="addr" id="addr" class="form-control" th:value="${dto.addr}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="grade">Grade</label>
+        <select class="form-select" aria-label="Default select example" name="grade" disabled>
+          <option value="FRESHMAN" th:selected="${dto.grade.name()} == 'FRESHMAN'">FRESHMAN</option>
+          <option value="SOPHOMORE" th:selected="${dto.grade.name()} == 'SOPHOMORE'">SOPHOMORE</option>
+          <option value="JUNIOR" th:selected="${dto.grade.name() == 'JUNIOR'}">JUNIOR</option>
+          <option value="SENIOR" th:selected="${dto.grade.name() == 'SENIOR'}">SENIOR</option>
+        </select>      
+      </div>
+      <div class="mb-3">
+        <label for="createDateTime">Register Date</label>
+        <input type="text" name="createDateTime" id="createDateTime" class="form-control" th:value="${#temporals.format(dto.createDateTime,'yyyy-MM-dd HH:mm')}" readonly>
+      </div>
+      <a type="button" class="btn btn-outline-success" th:href="@{/student/list}"
+        >List</a
+      >
+      <a type="button" class="btn btn-outline-primary" th:href="@{/student/modify(id=${dto.id})}">Update</a>
+    </form>
+  </div>
+  </div>
+</html>

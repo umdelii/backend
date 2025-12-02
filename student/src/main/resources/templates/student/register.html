@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>Register</h1>
+    <form action="" method="post" id="insert-form">
+      <div class="mb-3">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" placeholder="name" class="form-control">
+      </div>
+      <div class="mb-3">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gender" id="gender-m" value="M" checked>
+          <label class="form-check-label" for="gender-m">Man
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gender" id="gender-f" value="F">
+          <label class="form-check-label" for="gender-f">Female
+          </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="addr">Address</label>
+        <input type="text" name="addr" id="addr" placeholder="address" class="form-control" autocomplete="off">
+      </div>
+      <div class="mb-3">
+        <label for="grade">Grade</label>
+          <select class="form-select" aria-label="Default select example" name="grade">
+            <option selected>grade</option>
+            <option value="FRESHMAN">FRESHMAN</option>
+            <option value="SOPHOMORE">SOPHOMORE</option>
+            <option value="JUNIOR">JUNIOR</option>
+            <option value="SENIOR">SENIOR</option>
+          </select>      
+      </div>
+      <a type="button" class="btn btn-outline-success" th:href="@{/student/list}"
+        >List</a
+      >
+      <button type="submit" class="btn btn-outline-primary">Register</button>
+    </form>
+  </div>
+  </div>
+</html>
