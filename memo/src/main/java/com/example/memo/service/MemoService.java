@@ -3,6 +3,7 @@ package com.example.memo.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +53,15 @@ public class MemoService {
 
         public List<MemoDTO> readAll(){
         List<Memo> memos = memoRepository.findAll();
-        List<MemoDTO> list = new ArrayList<>();
-        for (Memo memo : memos) {
-            MemoDTO dto = modelMapper.map(memo, MemoDTO.class);
-            list.add(dto);
-        }
+        // List<MemoDTO> list = new ArrayList<>();
+        // for (Memo memo : memos) {
+        //     MemoDTO dto = modelMapper.map(memo, MemoDTO.class);
+        //     list.add(dto);
+        // }
+
+        // stream 배운 후 적용 방법
+        List<MemoDTO> list = memos.stream().map(memo->modelMapper.map(memo,MemoDTO.class)).collect(Collectors.toList());
+
         return list;
     }
         

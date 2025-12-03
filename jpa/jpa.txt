@@ -58,3 +58,12 @@ Entity 동작 확인!
 bean(객체)관리
 
 junit => java test해주는 제일 유명한 test 라이브러리
+
+
+
+
+유용한 사이트
+1. 필요한 라이브러리(리파지토리) 가져오기
+https://mvnrepository.com/ 
+2. db 쿼리문을 실행해줄수있게하는 jpa 문
+https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
