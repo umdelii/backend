@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{/layouts/layout}">
+<html lang="en" layout:decorate="~{layouts/layout}">
   <div layout:fragment="content">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title fw-semibold mb-4">Register Book</h5>
+        <h5 class="card-title fw-semibold mb-4">Modify</h5>
         <div class="card">
           <div class="card-body">
-            <form action="" method="post" th:object="${bookDTO}">
+            <form action="" method="post" id="form">
               <div class="mb-3">
                 <label for="isbn" class="form-label">Isbn</label>
                 <input
@@ -15,13 +15,9 @@
                   id="isbn"
                   aria-describedby="isbn"
                   name="isbn"
-                  th:value="${bookDTO.isbn}"
+                  th:value="${dto.isbn}"
+                  readonly
                 />
-                <div
-                  class="text-danger"
-                  th:if="${#fields.hasErrors('isbn')}"
-                  th:errors="*{isbn}"
-                ></div>
               </div>
               <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
@@ -30,13 +26,9 @@
                   class="form-control"
                   id="title"
                   name="title"
-                  th:value="${bookDTO.title}"
+                  th:value="${dto.title}"
+                  readonly
                 />
-                <div
-                  class="text-danger"
-                  th:if="${#fields.hasErrors('title')}"
-                  th:errors="*{title}"
-                ></div>
               </div>
               <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
@@ -45,13 +37,8 @@
                   class="form-control"
                   id="price"
                   name="price"
-                  th:value="${bookDTO.price}"
+                  th:value="${dto.price}"
                 />
-                <div
-                  class="text-danger"
-                  th:if="${#fields.hasErrors('price')}"
-                  th:errors="*{price}"
-                ></div>
               </div>
               <div class="mb-3">
                 <label for="author" class="form-label">Author</label>
@@ -60,46 +47,35 @@
                   class="form-control"
                   id="author"
                   name="author"
-                  th:value="${bookDTO.author}"
+                  th:value="${dto.author}"
+                  readonly
                 />
-                <div
-                  class="text-danger"
-                  th:if="${#fields.hasErrors('author')}"
-                  th:errors="*{author}"
-                ></div>
               </div>
               <div class="mb-3">
-                <label for="author" class="form-label">Description</label>
+                <label for="description" class="form-label">Description</label>
                 <textarea
                   type="text"
                   class="form-control"
                   id="description"
                   name="description"
                   rows="3"
-                  th:value="${bookDTO.description}"
+                  th:text="${dto.description}"
                 ></textarea>
               </div>
-
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <input type="hidden" name="id" th:value="${dto.id}" />
+              <button type="submit" class="btn btn-primary">Update</button>
+              <button type="button" class="btn btn-danger">Delete</button>
+              <a type="button" class="btn btn-success" th:href="@{/book/list}"
+                >List</a
+              >
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <th:block layout:fragment="script">
-    <!-- 페이지별 javascript 작성 -->
-    <script th:inline="javascript">
-      let msg = [[${msg}]];
-      console.log(msg);
-      if (msg) {
-          Swal.fire({
-            title: msg,
-            icon: "success",
-            draggable: true,
-          });
-      }
-    </script>
+    <!-- 페이지별 script 작성 영역 -->
+    <script th:src="@{/js/modify.js}"></script>
   </th:block>
 </html>

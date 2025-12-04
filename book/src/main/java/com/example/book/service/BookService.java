@@ -10,6 +10,7 @@ import com.example.book.dto.BookDTO;
 import com.example.book.entity.Book;
 import com.example.book.repository.BookRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -62,9 +63,16 @@ public class BookService {
         return modelMapper.map(book, BookDTO.class);
     }
 
+    public List<BookDTO> readAll() {
+        List<Book> book = bookRepository.findAll();
+
+        return book.stream().map(b -> modelMapper.map(b, BookDTO.class)).collect(Collectors.toList());
+    }
+
     public Long update(BookDTO dto) {
         Book book = bookRepository.findById(dto.getId()).orElseThrow();
         book.changePrice(dto.getPrice());
+        book.changeDescription(dto.getDescription());
 
         return bookRepository.save(book).getId();
     }

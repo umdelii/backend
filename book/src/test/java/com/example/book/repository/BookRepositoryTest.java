@@ -5,9 +5,11 @@ import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.example.book.dto.BookDTO;
 import com.example.book.entity.Book;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -18,15 +20,18 @@ public class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private ModelMapper mapper;
+
     @Test
     public void testInsert() {
-        Book book = Book.builder()
-                .isbn("B10001")
+        BookDTO book = BookDTO.builder()
+                .isbn("B10011")
                 .title("book1")
                 .price(80000L)
                 .author("정이안")
                 .build();
-        bookRepository.save(book);
+        bookRepository.save(mapper.map(book, Book.class));
     }
 
     @Test

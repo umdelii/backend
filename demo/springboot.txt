@@ -120,6 +120,12 @@ th:switch : 스위치문
 <script th:scr="@{/js/my.js}" : script 폴더 아래 경로없음 
 <link th:href="@{/css/my.css}" rel="stylesheet"> : css 경로없음
 <img th:src=@{/img/my.jpg}"> : 이미지 파일
+th:object="${dto명(예:bookDTO)}" 
+	- 맨앞글자는 소문자로, 
+	  만약 이름을 바꾸고 싶은 경우에는 controller 매개변수에 @ModelAttribute("html에 명시할 이름")을 붙이자
+
+<div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+
 
 thymeleaf-layout-dialect
 layout.html : 전체 레이아웃 정의
