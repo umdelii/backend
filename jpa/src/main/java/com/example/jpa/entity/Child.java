@@ -6,35 +6,28 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@AllArgsConstructor
 @Builder
-@ToString(exclude = "team")
-public class TeamMember {
+@ToString(exclude = "parent")
+public class Child {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "child_id")
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    // 외래키 설정
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    // FetchType.LAZY -> join 하지마 너 테이블거만 갖고와
-    // @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    // manytoone 에서는 eager이 디폴트값
-    @JoinColumn(name = "team_id")
-    private Team team;
+    private Parent parent;
 }

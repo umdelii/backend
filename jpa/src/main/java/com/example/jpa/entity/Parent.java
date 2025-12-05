@@ -1,40 +1,36 @@
 package com.example.jpa.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@AllArgsConstructor
 @Builder
-@ToString(exclude = "team")
-public class TeamMember {
+@ToString(exclude = "childs")
+public class Parent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "parent_id")
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    // 외래키 설정
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    // FetchType.LAZY -> join 하지마 너 테이블거만 갖고와
-    // @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    // manytoone 에서는 eager이 디폴트값
-    @JoinColumn(name = "team_id")
-    private Team team;
+    @OneToMany(mappedBy = "parent")
+    @Builder.Default
+    private List<Child> childs = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package com.example.jpa.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,18 +12,19 @@ import com.example.jpa.entity.Student;
 import com.example.jpa.entity.constant.Grade;
 
 @SpringBootTest
+@Disabled
 public class StudentRepositoryTest {
     @Autowired
     private StudentRepository studentRepository;
-    
+
     @Test
-    public void readTest(){
+    public void readTest() {
         Student student = studentRepository.findById(2L).get();
         System.out.println(student); // com.example.jpa.entity.Student@35e0d91e -> ToString 안해서 이상한거뜬다
     }
 
     @Test
-    public void readAllTest(){
+    public void readAllTest() {
         // 전체 행(학생) 조회
         List<Student> students = studentRepository.findAll();
 
@@ -31,9 +33,8 @@ public class StudentRepositoryTest {
         }
     }
 
-
     @Test
-    public void updateTest(){
+    public void updateTest() {
         // Entity
         // update stutbl set 수정할컬럼=값 where id=1;
         Optional<Student> result = studentRepository.findById(2L);
@@ -44,13 +45,13 @@ public class StudentRepositoryTest {
     }
 
     @Test
-    public void insertTest(){
+    public void insertTest() {
         Student student = Student.builder()
-        .name("정이안")
-        .addr("seoul")
-        .gender("F")
-        .grade(Grade.SOPHOMORE)
-        .build();
+                .name("정이안")
+                .addr("seoul")
+                .gender("F")
+                .grade(Grade.SOPHOMORE)
+                .build();
 
         // save() : insert, update 작업 시 호출
         studentRepository.save(student);
@@ -65,7 +66,7 @@ public class StudentRepositoryTest {
     }
 
     @Test
-    public void deleteTest(){
+    public void deleteTest() {
         // 방법1
         // Student student = studentRepository.findById(2L).get();
         // studentRepository.delete(student);

@@ -87,7 +87,47 @@ db의 외래키 개념
 
 @ManytoOne(optional = true) -> null 허용하는 조일컬럼이 생성됨
     허용하지않으려면 false
+    join ~ on ~ : 자동으로 join 처리
+
+@ManyToOne(optional = false, fetch = FetchType.LAZY)
+ - 외래 키 테이블 정보를 조회하지 않음 => join하지 않음
+ - 외래 키에 해당하는 객체 탐색 시 => LazyInitializationException 오류가 뜬다
+
 
 @JoinColumn(name = "")
- -  부모키가 team_id면 team_team_id 이렇게 만들어줌 ...
+ - 따로 name 설정안하면? 부모키가 team_id면 team_team_id 이렇게 만들어줌 ...
  - 테이블명_기본키명
+
+@OnetoMany 
+ - @ManyToOne의 상대방 클래스에 작성
+ - 왜 걸까?
+    원 sql의 외래키 개념과 불균형이 발생됨(객체에서는 양쪽에서 접근이 불가능하다) => 해결하기 위해 양쪽에 객체 관계를 설정해서 jpa에 알려줘야해
+ - 조금 문제가 있다... what?
+    얘는 fetch가 기본 LAZY기때문에 조인구문으로 처리하지않음
+FetchType.LAZY(지연로딩) => 본인 테이블의 정보만 먼저 가져오기때문에 조인관계 테이블에 접근시 LazyInitializationException이 뜬다
+    해결법 1. 해당 메소드에 @Transactional을 붙이기
+        but, 본인, 조인관계 테이블 접근 시 각각의 select 구문으로 처리(select 두번함) (이게 더 처리속도가 빠른 경우도 있어)
+    해결법 2. left join으로 처리하게 하자(FetchType.EAGER(즉시로딩))
+
+@OnetoOne : 기본적으로 내부조인으로 처리
+
+그래서 기본적으로 @ManyToOne이나 @OneToOne은 -> FetchType.LAZY 처리 => @Transactional 하거나 / @EntityGraph(필요할때만 join 구문 사용) 한다
+
+@OnetoOne(mappedBy = "부모키있는테이블변수명")
+ = 외부조인으로 처리
+
+객체 그래프 탐색
+FetchType.EAGER(즉시로딩) : 연관된 객체를 조회하는 시점에 바로 사용
+FetchType.LAZY(지연로딩) : 연관된(외래키) 객체를 실제 사용하는 시점에 데이터베이스에서 조회
+
+1. 단방향(@ManytoOne)
+    - 내부조인으로 처리
+    - fetch = FetchType.LAZY를 통해 해당 테이블 정보만 조회 
+        => 해결 1. @Transactional
+        => 해결 2. @EntityGraph
+2. 양방향(@ManytoOne/@OnetoMany)
+    - @OnetoMany : default 값이 LAZY다
+3. 단방향(@OnetoOne)
+    - @ManyToOne 이랑 똑같다.
+4. 양방향(@OneToOne/@OneToOne)
+    - 외부조인하네? left join
