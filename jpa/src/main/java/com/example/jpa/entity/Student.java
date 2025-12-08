@@ -1,17 +1,12 @@
 package com.example.jpa.entity;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+// import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.example.jpa.entity.constant.Grade;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+// import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@EntityListeners(value = AuditingEntityListener.class) // LocalDateTime
+// @EntityListeners(value = AuditingEntityListener.class) // LocalDateTime
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -32,7 +27,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "stutbl")
 @Entity // == 이 클래스는 테이블과 연동되어있음을 알려주는 어노테이션
-public class Student {
+public class Student extends BaseEntity {
     // @GeneratedValue(strategy = GenerationType.AUTO) => GenerationType.AUTO가
     // default값 (Hibernate가 자동으로 생성)
 
@@ -63,14 +58,14 @@ public class Student {
     @Column
     private Grade grade;
 
-    @CreationTimestamp // Hibernate꺼 insert시 자동으로 일자 삽입하고 싶을때 사용
-    private LocalDateTime createDateTime1; // datetime(6)
+    // @CreationTimestamp // Hibernate꺼 insert시 자동으로 일자 삽입하고 싶을때 사용
+    // private LocalDateTime createDateTime1; // datetime(6)
 
-    @CreatedDate // spring boot 설정 후 삽입
-    private LocalDateTime createDateTime2; // datetime(6)
+    // @CreatedDate // spring boot 설정 후 삽입
+    // private LocalDateTime createDateTime2; // datetime(6)
 
-    @LastModifiedDate // 마지막 수정일시
-    private LocalDateTime upDateTime;
+    // @LastModifiedDate // 마지막 수정일시
+    // private LocalDateTime upDateTime;
 
     public void changeName(String name) {
         this.name = name;

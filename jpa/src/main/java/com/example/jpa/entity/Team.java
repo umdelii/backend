@@ -3,6 +3,7 @@ package com.example.jpa.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,12 +35,12 @@ public class Team {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)
     // mappdeBy를 안넣으면 각 클래스끼리 join을 두번해버림, 따라서 mappedBy = "주인 클래스의 내 필드 변수명"으로
     // 무조건!
     // 넣어서 알려줘야함
     @Builder.Default
     private List<TeamMember> teamMembers = new ArrayList<>();
-    // 객체를 리스트도 만들어 초기화하는거랑 그냥 필드선언하는거랑 뭐가 다를까?
+    // 객체를 리스트도 만들어 초기화하는거랑 그냥 필드선언하는거랑 뭐가 다를까? => 하나의 팀에 여러명의 멤버가 있을수있잖아 ...list지
     // private TeamMember teamMember;
 }

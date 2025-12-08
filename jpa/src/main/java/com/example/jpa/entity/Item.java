@@ -1,15 +1,14 @@
 package com.example.jpa.entity;
 
-import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+// import org.springframework.data.annotation.CreatedDate;
+// import org.springframework.data.annotation.LastModifiedDate;
 
 import com.example.jpa.entity.constant.ItemSellStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
@@ -23,22 +22,22 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "itemtbl")
-@EntityListeners(value = AuditingEntityListener.class)
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Item {
+public class Item extends BaseEntity {
     // 테이블명 : itemtbl
-    // column : 상품코드(@Id)(code - P0001), 상품명(item_nm), 가격(item_price), 재고수량(stock_number), 상세설명(item_detail), 
-    //          판매상태(item_sell_status / sell, soldout 둘중하나), 등록시간, 수정시간
+    // column : 상품코드(@Id)(code - P0001), 상품명(item_nm), 가격(item_price),
+    // 재고수량(stock_number), 상세설명(item_detail),
+    // 판매상태(item_sell_status / sell, soldout 둘중하나), 등록시간, 수정시간
 
     @Id
     @Column
     private String code;
 
-    @Column(name = "item_name",nullable = false)
+    @Column(name = "item_name", nullable = false)
     private String itemNm;
 
     @Column(name = "price", nullable = false)
@@ -54,15 +53,10 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus sellStatus;
 
-    @CreatedDate
-    private LocalDateTime createTime;
-
-    @CreatedDate
-    private LocalDateTime updateTime;
-
     public void setSellStatus(ItemSellStatus sellStatus) {
         this.sellStatus = sellStatus;
     }
+
     public void setStockNumber(Long stockNumber) {
         this.stockNumber = stockNumber;
     }

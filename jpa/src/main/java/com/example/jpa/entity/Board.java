@@ -1,13 +1,12 @@
 package com.example.jpa.entity;
 
-import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+// import org.springframework.data.annotation.CreatedDate;
+// import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,13 +19,12 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "boardtbl")
-@EntityListeners(value = AuditingEntityListener.class)
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Board {
+public class Board extends BaseEntity {
     // id(auto_increasement), 제목(title), 내용(content-1500), 작성자(writer), 작성일, 수정일
 
     @Id
@@ -42,15 +40,18 @@ public class Board {
     @Column(nullable = false, length = 20)
     private String writer;
 
-    @CreatedDate
-    private LocalDateTime createTime;
+    // @CreatedDate
+    // private LocalDateTime createTime;
 
-    @CreatedDate
-    private LocalDateTime updateTime;
+    // @LastModifiedDate
+    // private LocalDateTime updateTime;
+
+    // 각 엔티티에 공통된 칼럼들이 있다면 그걸 따로 클래스로 분리시켜서 불러오는건(상속) 어떨까?
 
     public void setTitle(String title) {
         this.title = title;
     }
+
     public void setContent(String content) {
         this.content = content;
     }

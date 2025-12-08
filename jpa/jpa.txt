@@ -129,5 +129,25 @@ FetchType.LAZY(지연로딩) : 연관된(외래키) 객체를 실제 사용하�
     - @OnetoMany : default 값이 LAZY다
 3. 단방향(@OnetoOne)
     - @ManyToOne 이랑 똑같다.
-4. 양방향(@OneToOne/@OneToOne)
+4. 양방향(@OneToOne/@OneToOnej)
     - 외부조인하네? left join
+
+영속성 관리
+ => 내부적으로 Persistence Context를 이용해 관리함
+
+Persistence Context
+ 1차 캐시 : 조회한 엔티티를 저장, 같은 엔티티 조회 시 재쿼리 실행 방지
+ 변경 감지 : dirty check  (값 변경 시 update 구문 실행) 
+ 엔티티 동일성 보장 / 라이프 사이클(New,Managed,Removed,Detached) 관리
+ 지연 로딩(Lazy Loading) = 프록시 유지
+
+ 부모 / 자식
+ @OneToMany(mappedBy = "부모변수명", cascade = {CascadeType.PERSISIT, CascadeType.REMOVE}, orphanRemoval = true)
+    cascade = 하나의 엔티티에 발생하는 과정을 다른 엔티티에도 전파
+    CascadeType.PERSISIT : 부모 삽입 시 자식도 삽입
+        코드 상은 ArrayList에 자식 추가 => 부모만 save()
+    CascadeType.REMOVE : 부모 삭제 시 자식도 삭제
+        코드 상은 부모만 제거 
+    orphanRemoval : 고아객체
+        코드 상 부모 엔티티 컬렉션에서 자식 엔티티의 참조만 제거 => 부모만 save()
+        p.getChilds().remove();

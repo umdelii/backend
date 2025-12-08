@@ -1,16 +1,16 @@
 package com.example.jpa.entity;
 
-import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+// import org.springframework.data.annotation.CreatedDate;
+// import org.springframework.data.annotation.LastModifiedDate;
+// import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.example.jpa.entity.constant.RoleType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+// import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -25,13 +25,12 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "membertbl")
-@EntityListeners(value = AuditingEntityListener.class)
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Member {
+public class Member extends BaseEntity {
     // column
     // id, name(필수), age(필수), 역할(member,admin), 가입일자, 수정일자, 자기소개
 
@@ -39,7 +38,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String userId;
 
     @Column(nullable = false)
@@ -49,11 +48,11 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    @CreatedDate
-    private LocalDateTime createDate;
+    // @CreatedDate
+    // private LocalDateTime createDate;
 
-    @LastModifiedDate
-    private LocalDateTime updateDate;
+    // @LastModifiedDate
+    // private LocalDateTime updateDate;
 
     @Column(length = 2000)
     // clob 지정
@@ -64,10 +63,11 @@ public class Member {
         this.role = role;
     }
 
-    //수업x 개인용(name guest뒤에 숫자 안붙임) 메소드
+    // 수업x 개인용(name guest뒤에 숫자 안붙임) 메소드
     public void updateUserId(String userId) {
         this.userId = userId;
     }
+
     // 컬럼 잘못넣음 ㅎㅎ;
     public void updateName(String name) {
         this.name = name;
