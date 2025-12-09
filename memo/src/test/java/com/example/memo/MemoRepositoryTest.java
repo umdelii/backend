@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.memo.entity.Memo;
 import com.example.memo.repository.MemoRepository;
 
-@SpringBootTest //test야 알려주기
-@Disabled
+@SpringBootTest // test야 알려주기
+// @Disabled
 public class MemoRepositoryTest {
     @Autowired
     private MemoRepository memoRepository;
@@ -19,18 +19,18 @@ public class MemoRepositoryTest {
     // crud 테스트
 
     @Test
-    public void insertTest(){
+    public void insertTest() {
         for (int i = 1; i < 11; i++) {
             Memo memo = Memo.builder()
-            .memoText("memo text"+i)
-            .build();
+                    .memoText("memo text" + i)
+                    .build();
 
             memoRepository.save(memo);
         }
     }
 
     @Test
-    public void updateTest(){
+    public void updateTest() {
         // id = 3의 text 수정
         Memo memo = memoRepository.findById(3L).get();
         memo.changeMemoText("변경 text");
@@ -39,20 +39,20 @@ public class MemoRepositoryTest {
     }
 
     @Test
-    public void deleteTest(){
+    public void deleteTest() {
         memoRepository.deleteById(10L);
     }
 
     @Test
-    public void readTest(){
+    public void readTest() {
         Memo memo = memoRepository.findById(4L).get();
         System.out.println(memo);
     }
 
     @Test
-    public void readAllTest(){
+    public void readAllTest() {
         List<Memo> memos = memoRepository.findAll();
-        memos.forEach((memo)->{
+        memos.forEach((memo) -> {
             System.out.println(memo);
         });
     }

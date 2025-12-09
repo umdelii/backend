@@ -151,3 +151,12 @@ Persistence Context
     orphanRemoval : 고아객체
         코드 상 부모 엔티티 컬렉션에서 자식 엔티티의 참조만 제거 => 부모만 save()
         p.getChilds().remove();
+
+@ManyToMany
+
+---------------------------------
+쿼리 생성
+1.findBy~~ : select
+2. @Query("쿼리구문") : entity 기준
+   @Query(value = "쿼리구문", nativeQuery=true) : sql 구문
+3. Querydsl : 동적인 상황에 대한 처리

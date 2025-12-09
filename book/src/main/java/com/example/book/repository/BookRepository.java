@@ -11,4 +11,18 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findByTitleContaining(String title); // select * from book where title like '%book%'; 의 의미
 
+    // where author = ''; 아니면
+    List<Book> findByAuthor(String author);
+
+    // where author like '%영'
+    List<Book> findByAuthorEndingWith(String author);
+
+    // where author like '박%'
+    List<Book> findByAuthorStartingWith(String author);
+
+    // where author like '%진수%'
+    List<Book> findByAuthorContaining(String author);
+
+    // 도서 가격이 70000이상 79000이하
+    List<Book> findByPriceBetween(Long startPrice, Long endPrice);
 }

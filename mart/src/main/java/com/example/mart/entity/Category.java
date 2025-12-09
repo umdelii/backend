@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -18,38 +20,29 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "mart_item")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@ToString(exclude = { "orderItems" })
-public class Item {
-    // id, name, price, quantity
+@Table(name = "mart_category")
+// @ToString(exclude = "items")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")
+    @Column(name = "category_id")
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Long price;
-
-    @Column
-    private Long quantity;
-
-    @OneToMany(mappedBy = "item")
-    @Builder.Default
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-    // M대N 양방향 열어주기
-    // @ManyToMany(mappedBy = "items")
+    // 다대다 관계 테이블을 jpa에게 직접 실행시킴
+    // 단점 : 컬럼 추가 어렵다
+    // @ManyToMany
     // @Builder.Default
-    // private List<Category> categories = new ArrayList<>();
+    // @JoinTable(name = "mart_category_item", joinColumns = @JoinColumn(name =
+    // "category_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
+    // private List<Item> items = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "category")
     @Builder.Default
     private List<CategoryItem> categoryItems = new ArrayList<>();
 }

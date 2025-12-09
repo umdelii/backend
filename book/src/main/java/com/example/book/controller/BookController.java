@@ -50,7 +50,7 @@ public class BookController {
     }
 
     @GetMapping({ "/read", "/modify" })
-    public void getRead(@RequestParam Long id, Model model) {
+    public void getRead(@RequestParam("id") Long id, Model model) {
         log.info("read, modify.html 호출 ID : {}", id);
         BookDTO dto = bookService.readId(id);
         model.addAttribute("dto", dto);

@@ -5,16 +5,17 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.book.dto.BookDTO;
 import com.example.book.entity.Book;
 import com.example.book.repository.BookRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookService {
     private final BookRepository bookRepository;
     private final ModelMapper modelMapper;
@@ -31,6 +32,7 @@ public class BookService {
 
     // R에 검색의 기능을 넣어보자
     // title로 검색하기 (unique니 검색은 하나밖에 되지않음)
+    @Transactional(readOnly = true)
     public List<BookDTO> readTitle(String title) {
         List<Book> result = bookRepository.findByTitleContaining(title);
 
@@ -50,6 +52,7 @@ public class BookService {
         return result.stream().map(book -> modelMapper.map(result, BookDTO.class)).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public BookDTO readIsbn(String isbn) {
         Book book = bookRepository.findByIsbn(isbn).orElseThrow();
 
@@ -57,12 +60,14 @@ public class BookService {
         return modelMapper.map(book, BookDTO.class);
     }
 
+    @Transactional(readOnly = true)
     public BookDTO readId(Long id) {
         Book book = bookRepository.findById(id).orElseThrow();
 
         return modelMapper.map(book, BookDTO.class);
     }
 
+    @Transactional(readOnly = true)
     public List<BookDTO> readAll() {
         List<Book> book = bookRepository.findAll();
 
@@ -74,7 +79,8 @@ public class BookService {
         book.changePrice(dto.getPrice());
         book.changeDescription(dto.getDescription());
 
-        return bookRepository.save(book).getId();
+        // return bookRepository.save(book).getId();
+        return book.getId();
     }
 
     public void delete(Long id) {

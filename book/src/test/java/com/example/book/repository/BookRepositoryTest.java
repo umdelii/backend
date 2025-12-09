@@ -1,5 +1,7 @@
 package com.example.book.repository;
 
+import static org.mockito.ArgumentMatchers.longThat;
+
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -15,7 +17,7 @@ import com.example.book.entity.Book;
 import jakarta.persistence.EntityNotFoundException;
 
 @SpringBootTest
-@Disabled
+// @Disabled
 public class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
@@ -82,5 +84,23 @@ public class BookRepositoryTest {
     @Test
     public void testDelete() {
         bookRepository.deleteById(10L);
+    }
+
+    @Test
+    public void testFindBy() {
+        List<Book> list = bookRepository.findByAuthor("정이안");
+        System.out.println("findByAuthor 실행 결과" + list);
+
+        list = bookRepository.findByAuthorEndingWith("안");
+        System.out.println("findByAuthor 실행 결과" + list);
+
+        list = bookRepository.findByAuthorStartingWith("김");
+        System.out.println("findByAuthorStartingWith 실행 결과" + list);
+
+        list = bookRepository.findByAuthorContaining("하람");
+        System.out.println("findByAuthorContaining 실행 결과" + list);
+
+        list = bookRepository.findByPriceBetween(70000L, 79000L);
+        System.out.println("findByPriceBetween 실행 결과" + list);
     }
 }
