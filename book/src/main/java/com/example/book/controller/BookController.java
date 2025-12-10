@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.book.dto.BookDTO;
+import com.example.book.dto.PageRequestDTO;
 import com.example.book.service.BookService;
 
 import jakarta.validation.Valid;
@@ -32,9 +33,9 @@ public class BookController {
     }
 
     @GetMapping("/list")
-    public void getList(Model model) {
+    public void getList(Model model, PageRequestDTO pageRequestDTO) {
         log.info("list.html 호출");
-        model.addAttribute("list", bookService.readAll());
+        model.addAttribute("list", bookService.readAll(pageRequestDTO));
     }
 
     @PostMapping("/register")

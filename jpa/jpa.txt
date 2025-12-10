@@ -158,5 +158,7 @@ Persistence Context
 쿼리 생성
 1.findBy~~ : select
 2. @Query("쿼리구문") : entity 기준
-   @Query(value = "쿼리구문", nativeQuery=true) : sql 구문
+   @Query(value = "쿼리구문", nativeQuery=true) or @NativeQuery(value = "쿼리구문") : sql 구문 
 3. Querydsl : 동적인 상황에 대한 처리
+    외부 라이브러리 이용
+    QuerydslPredicateExecutor 상속

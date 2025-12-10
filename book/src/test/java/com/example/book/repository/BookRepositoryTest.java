@@ -1,7 +1,5 @@
 package com.example.book.repository;
 
-import static org.mockito.ArgumentMatchers.longThat;
-
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -10,14 +8,18 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.example.book.dto.BookDTO;
 import com.example.book.entity.Book;
+import com.example.book.entity.QBook;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @SpringBootTest
-// @Disabled
+@Disabled
 public class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
@@ -103,4 +105,44 @@ public class BookRepositoryTest {
         list = bookRepository.findByPriceBetween(70000L, 79000L);
         System.out.println("findByPriceBetween 실행 결과" + list);
     }
+
+    @Test
+    public void pageTest() {
+        // 페이지 나누기
+        // bookRepository.findAll(Pageable pageable);
+        // 0으로 시작
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        Page<Book> result = bookRepository.findAll(pageRequest);
+        // 설정한 페이즈 사이즈(한 페이즈에 몇개 들어가있는지)
+        System.out.println("page size" + result.getSize());
+        // 총 페이지 수
+        System.out.println("total pages" + result.getTotalPages());
+        // 총 행의 개수
+        System.out.println("TotalElements" + result.getTotalElements());
+        System.out.println("getContent" + result.getContent());
+
+    }
+
+    // --------------------------------------
+    // querydsl 라이브러리 추가 // querydslpredicateexecutor
+    @Test
+    public void querydslTest() {
+        QBook book = QBook.book;
+        System.out.println(bookRepository.findAll(book.title.eq("title1"))); // equal => where title = ?
+        System.out.println(bookRepository.findAll(book.title.contains("10"))); // like %10%
+        System.out.println(bookRepository.findAll(book.title.contains("10").and(book.id.gt(3L)))); // like %10% and id>3
+
+        // where b1_0.title like %?% and b1_0.id > ? order by id desc
+        System.out.println(bookRepository.findAll(book.title.contains("book").and(book.id.gt(3L)),
+                Sort.by("id").descending()));
+
+        // where author '%정%' or title = '%8'
+        System.out.println(bookRepository.findAll(book.title.contains("정").or(book.author.contains("8"))));
+
+        // bookRepository.findAll(Predicate predicate, Pageable pageable);
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        Page<Book> result = bookRepository.findAll(book.id.gt(200L), pageRequest);
+
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.jpa.repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class TeamRepositoryTest {
 
     @Test
     public void testInsert2() {
-        Team team = teamRepository.findById(3L).get();
+        Team team = teamRepository.findById(1L).get();
 
         TeamMember member = TeamMember.builder().team(team).name("유하람").build();
         teamMemberRepository.save(member);
@@ -165,5 +166,27 @@ public class TeamRepositoryTest {
 
         TeamMember teamMember = team.getTeamMembers().get(0);
         teamMember.setName("김도훈");
+    }
+
+    // @Query 테스트
+    @Test
+    public void queryTest() {
+        Team team = teamRepository.findById(1L).get();
+        teamMemberRepository.findByMemberAndTeam(team).forEach(o -> {
+            System.out.println(Arrays.toString(o));
+            // [TeamMember(id=2, name=ㅁㄴㅇㄹ), Team(id=1, name=team5)]
+            // [TeamMember(id=3, name=유하람), Team(id=1, name=team5)]
+            TeamMember member = (TeamMember) o[0];
+            Team team1 = (Team) o[1];
+            System.out.println(member);
+            System.out.println(team1);
+        });
+    }
+
+    @Test
+    public void queryTest3() {
+        teamMemberRepository.findByMemberAndTeam3().forEach(list -> {
+            System.out.println(Arrays.toString(list));
+        });
     }
 }
