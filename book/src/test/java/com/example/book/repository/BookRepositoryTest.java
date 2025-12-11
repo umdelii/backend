@@ -144,5 +144,4 @@ public class BookRepositoryTest {
         Page<Book> result = bookRepository.findAll(book.id.gt(200L), pageRequest);
 
     }
-
 }

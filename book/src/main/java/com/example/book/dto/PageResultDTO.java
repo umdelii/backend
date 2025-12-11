@@ -27,6 +27,8 @@ public class PageResultDTO<E> {
 
     private long totalCount;
 
+    private int end;
+
     // 멤버변수가 아닌 이 메소드만 직접 부르고 싶을때 따로 지정, 이름 별도로 지정가능
     @Builder(builderMethodName = "withAll")
     public PageResultDTO(List<E> dtoList, PageRequestDTO pageRequestDTO, long totalCount) {
@@ -38,7 +40,7 @@ public class PageResultDTO<E> {
         // [11 12 13 14 15 16 17 18 19 20] 이렇게 화면에 페이지 목록 변하는거 계산하는 코드
 
         // page=1&siza=10 이라면
-        int end = (int) (Math.ceil(pageRequestDTO.getPage() / 10.0) * 10);
+        this.end = (int) (Math.ceil(pageRequestDTO.getPage() / 10.0) * 10);
         // 10.0으로 나누어서 1~10 페이지는 무조건 start=1, end=10으로 만듬
         int start = end - 9;
 
@@ -57,6 +59,7 @@ public class PageResultDTO<E> {
             this.prevPage = start - 1;
         }
         if (next) {
+            // 내가 응용해봄 다음페이지를 누르면 다음 10개 목록이 뜨게하기
             this.nextPage = end + 1;
         }
 

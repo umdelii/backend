@@ -161,4 +161,5 @@ Persistence Context
    @Query(value = "쿼리구문", nativeQuery=true) or @NativeQuery(value = "쿼리구문") : sql 구문 
 3. Querydsl : 동적인 상황에 대한 처리
     외부 라이브러리 이용
-    QuerydslPredicateExecutor 상속
+    1) QuerydslPredicateExecutor 상속(book 프로젝트에 처음 사용)
+    2) QuerydslRepositorySupport 상속

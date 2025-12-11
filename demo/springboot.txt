@@ -123,6 +123,7 @@ th:switch : 스위치문
 th:object="${dto명(예:bookDTO)}" 
 	- 맨앞글자는 소문자로, 
 	  만약 이름을 바꾸고 싶은 경우에는 controller 매개변수에 @ModelAttribute("html에 명시할 이름")을 붙이자
+th:classappend : class=" " 안의 내용 추가
 
 <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
 

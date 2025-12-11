@@ -36,6 +36,20 @@ public interface BookRepository extends JpaRepository<Book, Long>, QuerydslPredi
         QBook book = QBook.book;
 
         builder.and(book.id.gt(0));
+
+        if (type == null) {
+            return builder;
+        }
+
+        // 저자나 제목으로 검색하기
+        // type == 't'(title), type == 'a'(author)
+        if (type.equals("t")) {
+            // title like '%keyword%'
+            builder.and(book.title.contains(keyword));
+        } else {
+            // author like '%keyword'
+            builder.and(book.author.contains(keyword));
+        }
         return builder;
     }
 }
