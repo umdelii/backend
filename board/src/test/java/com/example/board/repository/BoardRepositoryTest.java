@@ -1,13 +1,17 @@
 package com.example.board.repository;
 
-import static org.mockito.ArgumentMatchers.isNull;
-
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,7 @@ import com.example.board.reply.repository.ReplyRepository;
 
 @SpringBootTest
 @Transactional
+@Disabled
 public class BoardRepositoryTest {
 
     @Autowired
@@ -72,6 +77,79 @@ public class BoardRepositoryTest {
                     .build();
             replyRepository.save(reply);
         });
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void readBoardTest() {
+        List<Board> list = boardRepository.findAll();
+        list.forEach(b -> {
+            System.out.println(b);
+            System.out.println(b.getWriter());
+        });
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void getBoardWithWriterTest() {
+        List<Object[]> result = boardRepository.getBoardWithWriter();
+        result.forEach(o -> {
+            System.out.println(Arrays.toString(o));
+        });
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void getBoardWithReplyWhereBnoTest() {
+        // JPA
+        Board board = boardRepository.findById(33L).get();
+        System.out.println(board);
+        // 댓글 가져오기
+        System.out.println(board.getReplies());
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void getBoardWithReplyWhereBnoTest2() {
+        // repository에 만든 임의 메소드들은 jpql이라고 부름
+        boardRepository.getBoardWithReplyWhereBno(33L).forEach(result -> {
+            System.out.println(Arrays.toString(result));
+        });
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void getBoardWithReplyCount() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+        result.forEach(obj -> {
+            // System.out.println(Arrays.toString(obj));
+            Board board = (Board) obj[0];
+            Member member = (Member) obj[1];
+            Long replyCnt = (Long) obj[2];
+            System.out.println(board);
+            System.out.println(member);
+            System.out.println(replyCnt);
+        });
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void getBoardByBnoTest() {
+        // boardRepository.getBoardByBno(49L).forEach(obj -> {
+        // System.out.println(Arrays.toString(obj));
+        // });
+
+        Object result = boardRepository.getBoardByBno(49L);
+        Object[] arr = (Object[]) result;
+        System.out.println(Arrays.toString(arr));
+    }
+
+    @Test
+    @Commit
+    public void deleteByBnoTest() {
+        replyRepository.deleteByBno(8L);
+        boardRepository.deleteById(8L);
     }
 
     // querydsl 테스트

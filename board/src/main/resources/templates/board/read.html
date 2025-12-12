@@ -3,19 +3,19 @@
   <div layout:fragment="content">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title fw-semibold mb-4">Book Information</h5>
+        <h5 class="card-title fw-semibold mb-4">Board Information</h5>
         <div class="card">
           <div class="card-body">
             <form action="" method="post">
               <div class="mb-3">
-                <label for="isbn" class="form-label">Isbn</label>
+                <label for="bno" class="form-label">Board Number</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="isbn"
-                  aria-describedby="isbn"
-                  name="isbn"
-                  th:value="${dto.isbn}"
+                  id="bno"
+                  aria-describedby="bno"
+                  name="bno"
+                  th:value="${dto.bno}"
                   readonly
                 />
               </div>
@@ -31,50 +31,40 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="price"
-                  name="price"
-                  th:value="${dto.price}"
-                  readonly
-                />
-              </div>
-              <div class="mb-3">
-                <label for="author" class="form-label">Author</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="author"
-                  name="author"
-                  th:value="${dto.author}"
-                  readonly
-                />
-              </div>
-              <div class="mb-3">
-                <label for="author" class="form-label">Description</label>
+                <label for="content" class="form-label">Content</label>
                 <textarea
+                  class="form-control"
+                  id="content"
+                  name="content"
+                  rows="10"
+                  th:text="${dto.content}"
+                  readonly
+                >
+                </textarea>
+              </div>
+              <div class="mb-3">
+                <label for="createDateTime" class="form-label"
+                  >Create Date</label
+                >
+                <input
                   type="text"
                   class="form-control"
-                  id="description"
-                  name="description"
-                  rows="3"
-                  th:text="${dto.description}"
+                  id="createDateTime"
+                  name="createDateTime"
+                  th:value="${#temporals.format(dto.createDateTime,'yyyy-MM-dd HH:mm')}"
                   readonly
-                ></textarea>
+                />
               </div>
-
               <a
                 type="button"
                 class="btn btn-success"
-                th:href="@{/book/modify(id=${dto.id},page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
+                th:href="@{/board/modify(bno=${dto.bno},page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
                 >Update</a
               >
               <a
                 type="button"
                 class="btn btn-primary"
-                th:href="@{/book/list(page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
+                th:href="@{/board/list(page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
                 >List</a
               >
               <input

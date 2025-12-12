@@ -1,7 +1,9 @@
 package com.example.board.post.dto;
 
-import groovy.transform.builder.Builder;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,5 +18,10 @@ public class BoardDTO {
 
     private String content;
 
-    private String email; // 작성자 이메일
+    // service에 사용해야할 메소드에 필요한 필드들
+    private String writerEmail; // 작성자 이메일
+    private String writerName; // 작성자 이름
+    private int replyCnt;
+    private LocalDateTime createDateTime;
+    private LocalDateTime updateDateTime;
 }

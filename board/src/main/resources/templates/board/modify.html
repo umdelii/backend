@@ -6,16 +6,16 @@
         <h5 class="card-title fw-semibold mb-4">Modify</h5>
         <div class="card">
           <div class="card-body">
-            <form action="" method="post" id="form">
+            <form action="" method="post" id="action-form">
               <div class="mb-3">
-                <label for="isbn" class="form-label">Isbn</label>
+                <label for="bno" class="form-label">Board Number</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="isbn"
-                  aria-describedby="isbn"
-                  name="isbn"
-                  th:value="${dto.isbn}"
+                  id="bno"
+                  aria-describedby="bno"
+                  name="bno"
+                  th:value="${dto.bno}"
                   readonly
                 />
               </div>
@@ -27,42 +27,32 @@
                   id="title"
                   name="title"
                   th:value="${dto.title}"
-                  readonly
                 />
               </div>
               <div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="price"
-                  name="price"
-                  th:value="${dto.price}"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="author" class="form-label">Author</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="author"
-                  name="author"
-                  th:value="${dto.author}"
-                  readonly
-                />
-              </div>
-              <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
+                <label for="content" class="form-label">Content</label>
                 <textarea
+                  class="form-control"
+                  id="content"
+                  name="content"
+                  rows="10"
+                  th:text="${dto.content}"
+                >
+                </textarea>
+              </div>
+              <div class="mb-3">
+                <label for="createDateTime" class="form-label"
+                  >Create Date</label
+                >
+                <input
                   type="text"
                   class="form-control"
-                  id="description"
-                  name="description"
-                  rows="3"
-                  th:text="${dto.description}"
-                ></textarea>
+                  id="createDateTime"
+                  name="createDateTime"
+                  th:value="${#temporals.format(dto.createDateTime,'yyyy-MM-dd HH:mm')}"
+                  disabled
+                />
               </div>
-              <input type="hidden" name="id" th:value="${dto.id}" />
               <!-- 이하 input:hidden은 modify에서는 포함하지않아도 되나, remove에서는 필요로함 -->
               <input
                 type="hidden"
@@ -75,14 +65,19 @@
                 th:value="${pageRequestDTO.size}"
               />
 
-              <button type="submit" class="btn btn-primary">Update</button>
+              <button type="submit" class="btn btn-success">Update</button>
               <button type="button" class="btn btn-danger">Delete</button>
               <a
                 type="button"
-                class="btn btn-success"
-                th:href="@{/book/list(page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
+                class="btn btn-primary"
+                th:href="@{/board/list(page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
                 >List</a
               >
+              <input
+                type="hidden"
+                name="page"
+                th:value="${pageRequestDTO.page}"
+              />
             </form>
           </div>
         </div>

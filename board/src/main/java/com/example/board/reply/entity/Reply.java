@@ -3,7 +3,6 @@ package com.example.board.reply.entity;
 import com.example.board.post.entity.BaseEntity;
 import com.example.board.post.entity.Board;
 
-import groovy.transform.ToString;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "board_reply")
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(excludes = { "board" })
+@ToString(exclude = { "board" })
 public class Reply extends BaseEntity {
 
     @Id

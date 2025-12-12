@@ -29,7 +29,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = { "writer" })
+@ToString(exclude = { "writer", "replies" })
 public class Board extends BaseEntity {
     // bno(auto_increasement), 제목(title), 내용(content-1500), 작성자(writer), 작성일, 수정일
 
@@ -48,7 +48,7 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "email")
     private Member writer;
 
-    // @OneToMany(mappedBy = "board")
-    // @Builder.Default
-    // private List<Reply> replies = new ArrayList<>();
+    @OneToMany(mappedBy = "board")
+    @Builder.Default
+    private List<Reply> replies = new ArrayList<>();
 }
