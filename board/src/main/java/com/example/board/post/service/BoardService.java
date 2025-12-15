@@ -1,7 +1,6 @@
 package com.example.board.post.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -36,7 +35,13 @@ public class BoardService {
     public PageResultDTO<BoardDTO> getList(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize(),
                 Sort.by("bno").descending());
-        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+
+        // @Query 사용
+        // Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+
+        // @querydsl 사용(검색기능)
+        Page<Object[]> result = boardRepository.list(pageRequestDTO.getType(), pageRequestDTO.getKeyword(), pageable);
+
         // 번호 , 제목(댓글개수), 작성자, 작성일
         // 위 Page<Object[]> result 얘 받아서 dto로 바꿔줘
         Function<Object[], BoardDTO> f = en -> entityToDto((Board) en[0], (Member) en[1], (Long) en[2]);
@@ -62,7 +67,14 @@ public class BoardService {
         return dto;
     }
 
-    public void insert(BoardDTO dto) {
+    public Long insert(BoardDTO dto) {
+        Member member = Member.builder().email(dto.getWriterEmail()).build();
+        Board board = Board.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .writer(member)
+                .build();
+        return boardRepository.save(board).getBno();
     }
 
     public BoardDTO update(BoardDTO dto) {

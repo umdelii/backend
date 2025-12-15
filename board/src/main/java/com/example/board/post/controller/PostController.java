@@ -2,6 +2,7 @@ package com.example.board.post.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -13,6 +14,9 @@ import com.example.board.post.dto.BoardDTO;
 import com.example.board.post.dto.PageRequestDTO;
 import com.example.board.post.dto.PageResultDTO;
 import com.example.board.post.service.BoardService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -22,6 +26,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PostController {
 
     private final BoardService boardService;
+
+    @GetMapping("/create")
+    public void getCreate(BoardDTO dto) {
+        log.info("create 호출");
+    }
+
+    @PostMapping("/create")
+    public String postCreate(@Valid BoardDTO dto, BindingResult result, RedirectAttributes rttr) {
+        log.info("create board {}", dto);
+        if (result.hasErrors()) {
+            return "/board/create";
+        }
+
+        Long bno = boardService.insert(dto);
+
+        rttr.addFlashAttribute("msg", "Book Number : " + bno + ", Create Complete");
+        return "redirect:/board/list";
+    }
 
     @GetMapping("/list")
     public void getList(PageRequestDTO pageRequestDTO, Model model) {

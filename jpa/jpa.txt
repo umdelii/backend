@@ -163,3 +163,28 @@ Persistence Context
     외부 라이브러리 이용
     1) QuerydslPredicateExecutor 상속(book 프로젝트에 처음 사용)
     2) QuerydslRepositorySupport 상속
+
+Rest
+자원(Resource)을 이름(URL)으로
+웹에서 데이터 전송 및 처리를 위한 인터페이스(RESTful API) 설계에 널리 사용됨.
+
+http://localhost:8080//memo/read +@GET : 데이터 + 템플릿
+
+서버 : 데이터 
+화면 : 다양성 제공
+
+http://localhost:8080/memo/new + POST + DATA => 삽입
+http://localhost:8080/memo/list + GET => DATA
+http://localhost:8080/memo/3 + DELETE => 삭제
+http://localhost:8080/memo/3 + PUT(PATCH) + DATA => 수정
+
+컨트롤러는 어떻게 바뀌지?(템플릿)
+    데이터 전달(데이터 가져오기), 템플릿은 신경쓰지않는다 => json
+
+---
+json 형식 => js로 처리
+자바스크립트 기반의 화면단 사용 시 편해짐 -> react 템플릿
+
+화면단 데이터 요청
+    1. fetch : 브라우저가 기본제공
+    2. axios : 외부라이브러리 필요

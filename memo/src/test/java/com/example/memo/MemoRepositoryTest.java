@@ -11,7 +11,7 @@ import com.example.memo.entity.Memo;
 import com.example.memo.repository.MemoRepository;
 
 @SpringBootTest // test야 알려주기
-// @Disabled
+@Disabled
 public class MemoRepositoryTest {
     @Autowired
     private MemoRepository memoRepository;

@@ -29,8 +29,17 @@
               <option value="t" th:seleted="${pageRequestDTO.type == 't'}">
                 Title
               </option>
-              <option value="a" th:seleted="${pageRequestDTO.type == 'a'}">
-                Author
+              <option value="c" th:seleted="${pageRequestDTO.type == 'c'}">
+                Content
+              </option>
+              <option value="w" th:seleted="${pageRequestDTO.type == 'w'}">
+                Writer
+              </option>
+              <option value="tc" th:seleted="${pageRequestDTO.type == 'tc'}">
+                Title+Content
+              </option>
+              <option value="tcw" th:seleted="${pageRequestDTO.type == 'tcw'}">
+                Title+Content+Writer
               </option>
             </select>
             <input
