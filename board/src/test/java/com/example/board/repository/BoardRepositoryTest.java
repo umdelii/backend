@@ -81,6 +81,21 @@ public class BoardRepositoryTest {
     }
 
     @Test
+    @Commit
+    public void insertReplyTest2() {
+        Board board = Board.builder().bno(401L).build();
+        IntStream.rangeClosed(1, 25).forEach(i -> {
+
+            Reply reply = Reply.builder()
+                    .text("text" + i)
+                    .replyer("guest" + i)
+                    .board(board)
+                    .build();
+            replyRepository.save(reply);
+        });
+    }
+
+    @Test
     @Transactional(readOnly = true)
     public void readBoardTest() {
         List<Board> list = boardRepository.findAll();

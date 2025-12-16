@@ -188,3 +188,15 @@ json 형식 => js로 처리
 화면단 데이터 요청
     1. fetch : 브라우저가 기본제공
     2. axios : 외부라이브러리 필요
+
+
+흔히 뜨는 오류들
+org.thymeleaf.exceptions.TemplateInputException: Error resolving template [memo/list3], template might not exist or might not be accessible by any of the configured Template Resolvers
+    - 경로랑 template 파일 확인
+
+Ambiguous handler methods mapped for HTTP path
+    - 하나의 url(주소)에 여러 컨트롤러를 매핑시킴 
+    - 하나의 컨트롤러에는 하나의 경로만!
+
+NoResourceFoundException: No static resource
+    - 경로매핑 확인 

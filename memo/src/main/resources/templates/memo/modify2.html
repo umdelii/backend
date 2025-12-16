@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>Modify</h1>
+    <form action="" method="post" id="modify-form">
+      <div class="mb-3">
+        <label for="mno" class="form-label">Id</label>
+        <input
+          type="text"
+          class="form-control"
+          id="mno"
+          th:value="${dto.mno}"
+          name="mno"
+          readonly
+        />
+      </div>
+      <div class="mb-3">
+        <label for="memoText" class="form-label">Text</label>
+        <textarea
+          class="form-control"
+          id="memoText"
+          rows="3"
+          name="memoText"
+        ></textarea>
+      </div>
+      <a type="button" class="btn btn-outline-success" th:href="@{/memo/list2}"
+        >List</a
+      >
+      <button
+        type="submit"
+        class="btn btn-outline-primary"
+        id="update-memo-text"
+      >
+        Update
+      </button>
+      <button type="submit" class="btn btn-outline-danger" id="delete-memo">
+        Delete
+      </button>
+    </form>
+  </div>
+  <th:block layout:fragment="script">
+    <!-- 페이지별 javascript 작성 -->
+    <script th:src="@{/js/modify2.js}"></script>
+  </th:block>
+</html>

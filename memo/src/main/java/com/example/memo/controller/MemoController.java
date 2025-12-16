@@ -110,4 +110,22 @@ public class MemoController {
         return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/list2")
+    public void getList2() {
+        log.info("전체 메모 요청");
+    }
+
+    @GetMapping({ "/read2", "modify2" })
+    public void getRead2(@RequestParam("mno") Long id, Model model) {
+        log.info("선택 메모 요청");
+        MemoDTO dto = memoService.read(id);
+        model.addAttribute("dto", dto);
+        model.addAttribute("mno", id);
+    }
+
+    @GetMapping("/create2")
+    public void getCreate2() {
+        log.info("추가 페이지(create2) 요청");
+    }
+
 }

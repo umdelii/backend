@@ -80,7 +80,7 @@
   </div>
   <th:block layout:fragment="script">
     <script th:inline="javascript">
-
+      const bno = [[${dto.bno}]]
       let msg = [[${msg}]];
 
       if (msg) {
@@ -91,5 +91,6 @@
           });
       }
     </script>
+    <script th:src="@{/js/read.js}"></script>
   </th:block>
 </html>

@@ -24,7 +24,7 @@
             <!-- ------------------------------- -->
             <!-- 새로운 메모(행) 삽입 (/memo/create) -->
             <a
-              th:href="@{/memo/read(id=${dto.mno})}"
+              th:href="@{/memo/read(mno=${dto.mno})}"
               th:text="${dto.memoText}"
             ></a>
           </td>
