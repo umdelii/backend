@@ -33,7 +33,7 @@ public class ReplyController {
         return replyService.getList(bno);
     }
 
-    // rnoを使って特定のリプ持ってくる
+    // rnoを使って特定のリプを引く
     @GetMapping("/{rno}")
     public ReplyDTO getReply(@PathVariable Long rno) {
         log.info("{}番目のリプ要請", rno);

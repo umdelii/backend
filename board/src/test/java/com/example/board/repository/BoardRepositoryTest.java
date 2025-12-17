@@ -191,4 +191,12 @@ public class BoardRepositoryTest {
             System.out.println(Arrays.toString(obj));
         });
     }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void getBoardByBnoTest2() {
+        Object[] result = boardRepository.getBoardByBno(401L);
+        System.out.println(Arrays.toString(result));
+    }
+
 }

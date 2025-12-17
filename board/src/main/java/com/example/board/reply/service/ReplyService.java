@@ -30,12 +30,13 @@ public class ReplyService {
         List<Reply> result = replyRepository.findByBoardOrderByRno(board);
 
         // reply => replyDTO 변경 후 리턴
-        // 1) ModelMapper : 구조가 완전히 동일할 때 편하다
+        // 1) ModelMapper : 구조(컬럼명과 개수등)가 완전히 동일할 때 편하다
         // 2) 직접 변환하는 메소드를 만들어라
 
         // return
         // result.stream().map(ReplyService::entityToDTO).collect(Collectors.toList());
-        // 밑에 있는 this는 ReplyServie(클래스,인스턴스)를 의미함
+        // 밑에 있는 this는 ReplyServie(클래스,인스턴스)를 선언!했기에 동시 map()과 동시 처리 가능
+        // this = private ReplySerive replyService; 같은 의미, 나(클래스)를 선언
         return result.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
