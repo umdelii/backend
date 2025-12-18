@@ -4,3 +4,18 @@ Using generated security password: 76cdd29a-c80a-4356-a0e4-c41a4b08d5a6
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 위와 같이 뜬다.
 localhost:8080 접속하면 localhost:8080/login으로 액세스, 로그인 화면이 뜸
+
+security
+ROLE
+    회원가입 + ROLE 부여 ex.일반, 멤버, admin
+    중복부여 가능
+
+http error 403 => 권한 없는 사용자가 권한이 필요한 경로에 접근시
+
+Service 작성
+    UserDetailsService 인터페이스 구현하기
+    리턴값은 무조건 UserDetails 리턴
+
+Controller => get만 작성, post는 작성하지않는다(form에 action달면 알아서 해줌)
+    get(html) - id 요소의 name은 무조건 username, password 요소의 name은 무조건 password
+

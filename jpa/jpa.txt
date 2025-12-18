@@ -33,13 +33,15 @@ spring-boot-starter-test : 어플리케이션 테스트 라이브러리 포함
 private StudentRepository StudentRepository
 
 스프링(부트) 프레임워크
- => 개발자의 할 일 축소
+ => 개발자의 할 일 축소(직접 new를 하지않음)
  => 객체 생성 => 사용
     A obj = new A();
     obj.method();
- => 스프링이 대신 new해주니 나는 new 해야 할 객체를 알려주기(어노테이션)
-    @Controller, @Service, @Repository, @Component, ...
+ => 스프링 컨테이너가 대신 new해주니 나는 new 해야 할 객체를 알려주기(어노테이션)
+    @Controller, @Service, @Repository, @Component, @Repository, @Bean ...
+        - @Component가 기본개념인데 상세하지않으니 serviec,controller 등등 나옴
  => 주입이 필요함 : 그게 바로 @AutoWired
+ @RequiredArgsConstructor + final => 초기화할 때 생성자 주입
 
 웹어플리케이션
 웹서버 + WAS(컨테이너(tomcat))
@@ -111,7 +113,9 @@ FetchType.LAZY(지연로딩) => 본인 테이블의 정보만 먼저 가져오�
 
 @OnetoOne : 기본적으로 내부조인으로 처리
 
-그래서 기본적으로 @ManyToOne이나 @OneToOne은 -> FetchType.LAZY 처리 => @Transactional 하거나 / @EntityGraph(필요할때만 join 구문 사용) 한다
+그래서 기본적으로 @ManyToOne이나 @OneToOne은 -> FetchType.LAZY 설정을 바꾸고 => @Transactional 하거나 / @EntityGraph(필요할때만 join 구문 사용) 한다
+
+@EntityGraph(arritubePaths = {"join으로 가지고 올 테이블 변수명}, type = EntityGraphType.LOAD(OR FETCH))
 
 @OnetoOne(mappedBy = "부모키있는테이블변수명")
  = 외부조인으로 처리
@@ -200,3 +204,4 @@ Ambiguous handler methods mapped for HTTP path
 
 NoResourceFoundException: No static resource
     - 경로매핑 확인 
+
