@@ -15,7 +15,12 @@ http error 403 => 권한 없는 사용자가 권한이 필요한 경로에 접�
 Service 작성
     UserDetailsService 인터페이스 구현하기
     리턴값은 무조건 UserDetails 리턴
+    UserDetails >> User >> MemberDTO
+
+로그인 정보 + 인증정보 => SecurityContextHolder 객체에 보관(.getContext() => 정보 가져와)
 
 Controller => get만 작성, post는 작성하지않는다(form에 action달면 알아서 해줌)
     get(html) - id 요소의 name은 무조건 username, password 요소의 name은 무조건 password
 
+쿠키 : 브라우저 이용(클라이언트 자원)
+세션 : 서버 이용

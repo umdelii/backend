@@ -1,7 +1,8 @@
 package com.example.club.service;
 
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,7 +25,7 @@ public class ClubService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("clubservice username {}" + username);
+        log.info("clubservice username : {}", username);
 
         // Optional<Member> result = memberRepository.findByEmailAndFromSocial(username,
         // false);
@@ -33,7 +34,13 @@ public class ClubService implements UserDetailsService {
         Member member = memberRepository.findByEmailAndFromSocial(username, false)
                 .orElseThrow(() -> new UsernameNotFoundException("メール確認"));
 
-        return new MemberDTO(member.getName(), member.getPassword(), false, null);
+        MemberDTO dto = new MemberDTO(member.getEmail(), member.getPassword(), member.isFromSocial(),
+                member.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                        .collect(Collectors.toSet()));
+
+        dto.setName(member.getName());
+
+        return dto;
     }
 
 }

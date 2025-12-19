@@ -24,7 +24,7 @@
             ></iconify-icon>
             <span class="hide-menu">Home</span>
           </li>
-          <li class="sidebar-item">
+          <li class="sidebar-item" sec:autorize="!isAuthenticated()">
             <a
               class="sidebar-link"
               th:href="@{/member/login}"
@@ -51,21 +51,35 @@
               </div>
             </a>
           </li>
-          <li class="sidebar-item">
+          <li class="sidebar-item" sec:authorize="hasRole('ROLE_MANAGER')">
             <a
               class="sidebar-link justify-content-between"
-              href="#"
+              th:href="@{/manager/info}"
               aria-expanded="false"
             >
               <div class="d-flex align-items-center gap-3">
                 <span class="d-flex">
                   <i class="ti ti-shopping-cart"></i>
                 </span>
-                <span class="hide-menu">eCommerce</span>
+                <span class="hide-menu">Manager</span>
               </div>
             </a>
           </li>
-          <li class="sidebar-item">
+          <li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a
+              class="sidebar-link justify-content-between"
+              th:href="@{/admin/manage}"
+              aria-expanded="false"
+            >
+              <div class="d-flex align-items-center gap-3">
+                <span class="d-flex">
+                  <i class="ti ti-shopping-cart"></i>
+                </span>
+                <span class="hide-menu">Admin</span>
+              </div>
+            </a>
+          </li>
+          <li class="sidebar-item" sec:authorize="isAuthenticated()">
             <a
               class="sidebar-link justify-content-between has-arrow"
               href="javascript:void(0)"
@@ -75,31 +89,41 @@
                 <span class="d-flex">
                   <i class="ti ti-layout-grid"></i>
                 </span>
-                <span class="hide-menu">Front Pages</span>
+                <span
+                  class="hide-menu"
+                  sec:authentication="principal.name"
+                ></span>
               </div>
             </a>
             <ul aria-expanded="false" class="collapse first-level">
               <li class="sidebar-item">
-                <a class="sidebar-link justify-content-between" href="#">
+                <a
+                  class="sidebar-link justify-content-between"
+                  th:href="@{/member/profile}"
+                >
                   <div class="d-flex align-items-center gap-3">
                     <div
                       class="round-16 d-flex align-items-center justify-content-center"
                     >
                       <i class="ti ti-circle"></i>
                     </div>
-                    <span class="hide-menu">Homepage</span>
+                    <span class="hide-menu">Profile</span>
                   </div>
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link justify-content-between" href="#">
+                <a
+                  class="sidebar-link justify-content-between"
+                  href="#"
+                  id="logout"
+                >
                   <div class="d-flex align-items-center gap-3">
                     <div
                       class="round-16 d-flex align-items-center justify-content-center"
                     >
                       <i class="ti ti-circle"></i>
                     </div>
-                    <span class="hide-menu">About Us</span>
+                    <span class="hide-menu">Logout</span>
                   </div>
                 </a>
               </li>

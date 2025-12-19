@@ -24,10 +24,15 @@ public class MemberController {
 
     @ResponseBody
     @GetMapping("/auth")
-    public Authentication getAuth() {
+    public Authentication getAuthInfo() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         return authentication;
+    }
+
+    @GetMapping("/profile")
+    public void getMember() {
+        log.info("profile form 呼び出し");
     }
 
 }
