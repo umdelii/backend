@@ -1,5 +1,6 @@
 package com.example.board.post.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,12 +55,13 @@ public class PostController {
 
     @GetMapping({ "/read", "/modify" })
     public void getReadOrModify(Long bno, Model model, PageRequestDTO pageRequestDTO) {
-        log.info("read of modify {}", bno);
+        log.info("read or modify {}", bno);
 
         BoardDTO dto = boardService.getRow(bno);
         model.addAttribute("dto", dto);
     }
 
+    @PreAuthorize("authentication.name == #dto.writerEmail")
     @PostMapping("/modify")
     public String postModify(PageRequestDTO pageRequestDTO, BoardDTO dto, RedirectAttributes rttr) {
         log.info("modify {} {}", dto, pageRequestDTO);
@@ -73,6 +75,7 @@ public class PostController {
         return "redirect:/board/read";
     }
 
+    @PreAuthorize("authentication.name == #dto.writerEmail")
     @PostMapping("/remove")
     public String postDelete(BoardDTO dto, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("remove 호출 {} {}", dto, pageRequestDTO);

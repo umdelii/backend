@@ -6,7 +6,11 @@
         <h5 class="card-title fw-semibold mb-4">Create Board</h5>
         <div class="card">
           <div class="card-body">
-            <form action="" method="post" th:object="${boardDTO}">
+            <form
+              th:action="@{/board/create}"
+              method="post"
+              th:object="${boardDTO}"
+            >
               <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input
@@ -47,7 +51,8 @@
                   id="writerName"
                   aria-describedby="writerName"
                   name="writerName"
-                  th:value="${boardDTO.writerName}"
+                  th:value="${#authentication.principal.name}"
+                  readonly
                 />
               </div>
               <div class="mb-3">
@@ -57,7 +62,7 @@
                   id="writerEmail"
                   aria-describedby="writerEmail"
                   name="writerEmail"
-                  value="user2@gmail.com"
+                  th:value="${#authentication.name}"
                 />
               </div>
 

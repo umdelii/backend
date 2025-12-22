@@ -6,7 +6,7 @@
         <h5 class="card-title fw-semibold mb-4">Modify</h5>
         <div class="card">
           <div class="card-body">
-            <form action="" method="post" id="action-form">
+            <form th:action="@{/board/modify}" method="post" id="action-form">
               <div class="mb-3">
                 <label for="bno" class="form-label">Board Number</label>
                 <input
@@ -53,6 +53,11 @@
                   disabled
                 />
               </div>
+              <input
+                type="hidden"
+                name="writerEmail"
+                th:value="${dto.writerEmail}"
+              />
               <!-- 이하 input:hidden은 modify에서는 포함하지않아도 되나, remove에서는 필요로함 -->
               <input
                 type="hidden"
@@ -65,8 +70,20 @@
                 th:value="${pageRequestDTO.size}"
               />
 
-              <button type="submit" class="btn btn-success">Update</button>
-              <button type="button" class="btn btn-danger">Delete</button>
+              <button
+                type="submit"
+                class="btn btn-success"
+                th:if="${dto.writerEmail} == ${#authentication.name}"
+              >
+                Update
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                th:if="${dto.writerEmail} == ${#authentication.name}"
+              >
+                Delete
+              </button>
               <a
                 type="button"
                 class="btn btn-primary"

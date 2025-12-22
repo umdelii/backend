@@ -58,6 +58,7 @@
               <a
                 type="button"
                 class="btn btn-success"
+                th:if="${dto.writerEmail} == ${#authentication.name}"
                 th:href="@{/board/modify(bno=${dto.bno},page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
                 >Update</a
               >
@@ -80,15 +81,28 @@
     <!-- 댓글 영역 -->
     <div class="card">
       <div class="card-body">
-        <form action="" method="post" id="reply-form">
+        <form
+          th:action="@{/replies/new}"
+          method="post"
+          id="reply-form"
+          sec:authorize="isAuthenticated()"
+        >
           <input type="hidden" name="rno" />
+          <!-- userの＠ID -->
+          <input
+            type="hidden"
+            name="replyerEmail"
+            th:value="${#authentication.name}"
+          />
           <div class="mb-3">
             <input
               type="text"
               class="form-control"
-              id="replyer"
-              name="replyer"
+              id="replyerName"
+              name="replyerName"
               placeholder="writer"
+              th:value="${#authentication.principal.name}"
+              readonly
             />
           </div>
 
@@ -143,8 +157,10 @@
   </div>
   <th:block layout:fragment="script">
     <script th:inline="javascript">
-      const bno = [[${dto.bno}]]
+      const bno = [[${dto.bno}]];
       let msg = [[${msg}]];
+      // reply-form에서 csrf 값 가져오기
+      const csrfVal = document.querySelector("#reply-form").querySelector("[name='_csrf']").value;
 
       if (msg) {
           Swal.fire({

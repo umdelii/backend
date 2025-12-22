@@ -1,8 +1,8 @@
-package com.example.club.config;
+package com.example.board.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices.RememberMeTokenAlgorithm;
 
-import com.example.club.handler.LoginSuccessHandler;
+import com.example.board.member.handler.LoginSuccessHandler;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -21,6 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @Configuration // スプリングの設定クラスだよ
 @Log4j2
 @EnableWebSecurity // すべてのウェブ要請に security filter chain 適用
+@EnableMethodSecurity // @PreAuthorize, @PostAuthorize アノテーションが使用可能
 public class SecurityConfig {
 
     @Bean // == インスタンス生成
@@ -30,13 +31,23 @@ public class SecurityConfig {
         // ->authorize.anyRequest().authenticated());
         // どんな(誰の)リクエスト(anyRequest)でも認証が必要(authenticated)
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/assets/**", "/img/**", "/member/auth").permitAll()
+                .requestMatchers("/", "/assets/**", "/img/**", "/member/auth", "/js/**", "/board/assets/images")
+                .permitAll()
                 .requestMatchers("/member/register").permitAll()
-                .requestMatchers("/member/**").hasRole("USER")
+                .requestMatchers("/board/list", "/board/read").permitAll()
+                .requestMatchers("/board/modify").hasAnyRole("USER", "MANAGER", "ADMIN")
+                // .requestMatchers("/board/modify").authenticated()
+                .requestMatchers("/board/remove").authenticated()
+                .requestMatchers("/board/create").authenticated()
+
+                .requestMatchers("/replies/board/**").permitAll()
+                .requestMatchers("/replies/new").authenticated()
+
+                .requestMatchers("/member/profile").hasRole("USER")
                 .requestMatchers("/manager/**").hasAnyRole("MANAGER")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN"))
                 // .httpBasic(Customizer.withDefaults()); // login画面の基本形態
-                // .formLogin(Customizer.withDefaults());
+                // .formLogin(Customizer.withDefaults())
                 .formLogin(login -> login
                         .loginPage("/member/login").permitAll()
                         // .defaultSuccessUrl("/", true)

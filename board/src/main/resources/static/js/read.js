@@ -43,7 +43,7 @@ const getReplyList = () => {
       data.forEach((reply) => {
         result += `          <div class="d-flex justify-content-between my-2 border-bottom" data-rno="${
           reply.rno
-        }">
+        }" data-email="${reply.replyerEmail}">
             <div class="p-3">
               <img
                 src="/img/userIcon.png"
@@ -53,7 +53,7 @@ const getReplyList = () => {
               />
             </div>
             <div class="flex-grow-1 align-self-center">
-              <div>${reply.replyer}</div>
+              <div>${reply.replyerName}</div>
               <div>
                 <span class="fs-5">${reply.text}</span>
               </div>
@@ -92,7 +92,7 @@ document.querySelector("#reply-form").addEventListener("submit", (e) => {
   const reply = {
     rno: rno,
     text: form.text.value,
-    replyer: form.replyer.value,
+    replyerEmail: form.replyerEmail.value,
     bno: bno,
   };
 
@@ -101,7 +101,10 @@ document.querySelector("#reply-form").addEventListener("submit", (e) => {
     //new
     fetch(`${url}/new`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "X-CSRF-TOKEN": csrfVal,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(reply),
     })
       .then((res) => {
@@ -120,7 +123,7 @@ document.querySelector("#reply-form").addEventListener("submit", (e) => {
           });
         }
 
-        form.replyer.value = "";
+        // form.replyer.value = "";
         form.text.value = "";
 
         getReplyList();
