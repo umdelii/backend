@@ -160,7 +160,14 @@
       const bno = [[${dto.bno}]];
       let msg = [[${msg}]];
       // reply-form에서 csrf 값 가져오기
-      const csrfVal = document.querySelector("#reply-form").querySelector("[name='_csrf']").value;
+      const replyForm = document.querySelector("#reply-form");
+      let csrfVal = undefined;
+      if (replyForm) {
+        csrfVal = replyForm.querySelector("[name='_csrf']").value;
+      }
+
+      // 현재 로그인 사용자 이메일 가져오기
+      const loginUser = [[${#authentication.name}]];
 
       if (msg) {
           Swal.fire({

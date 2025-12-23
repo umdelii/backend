@@ -1,6 +1,7 @@
 package com.example.board.reply.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.board.reply.dto.ReplyDTO;
@@ -11,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ public class ReplyController {
 
     // bno를 이용해 전체 댓글 가져오기
     @GetMapping("/board/{bno}")
+    // @PreAuthorize("permitAll()")
     public List<ReplyDTO> getList(@PathVariable Long bno) {
         log.info("{}번 글 댓글 요청", bno);
 
@@ -35,6 +38,7 @@ public class ReplyController {
 
     // rnoを使って特定のリプを引く
     @GetMapping("/{rno}")
+    @PreAuthorize("isAuthenticated()")
     public ReplyDTO getReply(@PathVariable Long rno) {
         log.info("{}番目のリプ要請", rno);
 
@@ -42,6 +46,7 @@ public class ReplyController {
     }
 
     @PutMapping("/{rno}")
+    @PreAuthorize("isAuthenticated()")
     public Long putReply(@RequestBody ReplyDTO dto) {
         log.info("수정 요청 {}", dto);
 
@@ -51,6 +56,7 @@ public class ReplyController {
     }
 
     @PostMapping("/new")
+    @PreAuthorize("isAuthenticated()")
     public Long postMethodName(@RequestBody ReplyDTO dto) {
         log.info("추가 요청 {}", dto);
         Long rno = replyService.create(dto);
@@ -59,6 +65,7 @@ public class ReplyController {
     }
 
     @DeleteMapping("/{rno}")
+    @PreAuthorize("isAuthenticated()")
     public String deleteReply(@PathVariable Long rno) {
         log.info("{}番目 削除", rno);
         replyService.delete(rno);

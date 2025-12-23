@@ -34,6 +34,7 @@ public class PostController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
     public String postCreate(@Valid BoardDTO dto, BindingResult result, RedirectAttributes rttr) {
         log.info("create board {}", dto);
         if (result.hasErrors()) {

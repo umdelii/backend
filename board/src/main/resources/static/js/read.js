@@ -60,17 +60,20 @@ const getReplyList = () => {
               <div class="text-muted">
                 <span class="small">${formatDate(reply.createDateTime)}</span>
               </div>
-            </div>
-            <div class="d-flex flex-column align-self-center">
+            </div>`;
+
+        if (`${loginUser}` === `${reply.replyerEmail}`) {
+          result += `<div class="d-flex flex-column align-self-center">
             <div class="mb-2">
                 <button class="btn btn-outline-success btn-sm">Update</button>
                 </div>
                 <div class="mb-2">
                 <button class="btn btn-outline-danger btn-sm">Delete</button>
               </div>
-            </div>
-          </div>
-          `;
+            </div>`;
+        }
+
+        result += `</div>`;
       });
       replyList.innerHTML = result;
     })
@@ -85,84 +88,88 @@ getReplyList();
 // submit 막고
 // json 형태로 데이터 변환 후 보내기
 // post요청들어가기
-document.querySelector("#reply-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const rno = form.rno.value;
-  const reply = {
-    rno: rno,
-    text: form.text.value,
-    replyerEmail: form.replyerEmail.value,
-    bno: bno,
-  };
+if (replyForm) {
+  replyForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const rno = form.rno.value;
+    const reply = {
+      rno: rno,
+      text: form.text.value,
+      replyerEmail: form.replyerEmail.value,
+      bno: bno,
+    };
 
-  // 수정 버튼과 추가 버튼이 같으니 rno의 value 존재여부로 판단하기
-  if (!rno) {
-    //new
-    fetch(`${url}/new`, {
-      method: "POST",
-      headers: {
-        "X-CSRF-TOKEN": csrfVal,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reply),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`에러 발생${res.status}`);
-        }
-        return res.json();
+    // 수정 버튼과 추가 버튼이 같으니 rno의 value 존재여부로 판단하기
+    if (!rno) {
+      //new
+      fetch(`${url}/new`, {
+        method: "POST",
+        headers: {
+          "X-CSRF-TOKEN": csrfVal,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reply),
       })
-      .then((data) => {
-        console.log(data);
-        if (data) {
-          Swal.fire({
-            title: "댓글 추가 완료",
-            icon: "success",
-            draggable: true,
-          });
-        }
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`에러 발생${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data) {
+            Swal.fire({
+              title: "댓글 추가 완료",
+              icon: "success",
+              draggable: true,
+            });
+          }
 
-        // form.replyer.value = "";
-        form.text.value = "";
+          // form.replyer.value = "";
+          form.text.value = "";
 
-        getReplyList();
+          getReplyList();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      // modify
+      fetch(`${url}/${rno}`, {
+        method: "PUT",
+        headers: {
+          "X-CSRF-TOKEN": csrfVal,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reply),
       })
-      .catch((err) => console.log(err));
-  } else {
-    // modify
-    const replyForm = document.querySelector("#reply-form");
-    fetch(`${url}/${rno}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reply),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`에러 발생${res.status}`);
-        }
-        return res.text();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data) {
-          Swal.fire({
-            title: "댓글 수정 완료",
-            icon: "success",
-            draggable: true,
-          });
-        }
-        replyForm.replyer.removeAttribute("readonly");
-        replyForm.rno.value = "";
-        replyForm.replyer.value = "";
-        replyForm.text.value = "";
-        replyForm.rbtn.innerHTML = "Insert Reply";
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`에러 발생${res.status}`);
+          }
+          return res.text();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data) {
+            Swal.fire({
+              title: "댓글 수정 완료",
+              icon: "success",
+              draggable: true,
+            });
+          }
+          replyForm.replyerEmail.removeAttribute("readonly");
+          replyForm.rno.value = "";
+          replyForm.replyerEmail.value = "";
+          replyForm.text.value = "";
+          replyForm.rbtn.innerHTML = "Insert Reply";
 
-        getReplyList();
-      })
-      .catch();
-  }
-});
+          getReplyList();
+        })
+        .catch();
+    }
+  });
+}
 // 삭제(수정) 버튼 누르면 rno 값 화면에 찍게하기
 
 // 내가 만들다만 코드(망함ㅎ)
@@ -197,6 +204,9 @@ replyList.addEventListener("click", (e) => {
     // true 인 경우 삭제(fetch)
     fetch(`${url}/${rno}`, {
       method: "DELETE",
+      headers: {
+        "X-CSRF-TOKEN": csrfVal,
+      },
     })
       .then((res) => {
         if (!res.ok) {
@@ -232,12 +242,12 @@ replyList.addEventListener("click", (e) => {
       .then((data) => {
         console.log(data);
         replyForm.rno.value = data.rno;
-        replyForm.replyer.value = data.replyer;
+        replyForm.replyerEmail.value = data.replyerEmail;
         // replyForm.replyer.readOnly = true;
-        replyForm.replyer.setAttribute("readonly", "true");
+        replyForm.replyerEmail.setAttribute("readonly", "true");
         replyForm.text.value = data.text;
         replyForm.rbtn.innerHTML = "Update Reply";
       })
-      .catch();
+      .catch((err) => console.log(err));
   }
 });
