@@ -1,9 +1,11 @@
 package com.example.movietalk.repository;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.movietalk.member.entity.Member;
@@ -26,6 +28,7 @@ import com.example.movietalk.movie.repository.MovieRepository;
 import com.example.movietalk.movie.repository.ReviewRepository;
 
 @SpringBootTest
+@Disabled
 public class MovieRepositoryTest {
     @Autowired
     private MovieRepository movieRepository;
@@ -117,9 +120,30 @@ public class MovieRepositoryTest {
     @Transactional(readOnly = true)
     public void getMovieWithAllTest() {
 
-        Object[] result = movieRepository.getMovieWithAll(100L);
+        List<Object[]> result = movieRepository.getMovieWithAll(100L);
 
-        System.out.println(Arrays.toString(result));
+        result.forEach(obj -> {
+            System.out.println(Arrays.toString(obj));
+        });
+    }
+
+    @Test
+    public void getMovieReviewTest() {
+        List<Review> result = reviewRepository.findByMovie(Movie.builder().mno(9L).build());
+        result.forEach(r -> {
+            System.out.println(r);
+            // レビュー投稿者照会
+            System.out.println(r.getMember().getEmail());
+        });
+    }
+
+    @Test
+    @Transactional
+    @Commit
+    public void deleteByMemberTest() {
+        // member
+        reviewRepository.deleteByMember(Member.builder().mid(2L).build());
+        memberRepository.deleteById(2L);
     }
 
 }

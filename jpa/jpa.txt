@@ -210,4 +210,8 @@ HttpServletRequest : 사용자의 요청을 가지고 오는 객체
 HttpServletResponse : 사용자에게 응답을 하는 객체
 
 
+                      th:if="${dto.movieImages.size() > 0 && movieImages[0].path != null}"
+                      th:src="|/upload/display?fileName=${dto.movieImages[0].getThumbnailURL}|"
+
+
 
