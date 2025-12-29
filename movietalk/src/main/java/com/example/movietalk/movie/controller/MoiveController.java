@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @Log4j2
@@ -21,12 +23,34 @@ public class MoiveController {
 
     private final MovieService movieService;
 
+    @GetMapping("/create")
+    public void getCreate() {
+        log.info("create form 要請");
+    }
+
+    @PostMapping("create")
+    public String postCreate(MovieDTO dto, RedirectAttributes rttr) {
+        log.info("映画追加要請 {}", dto);
+
+        String title = movieService.create(dto);
+
+        rttr.addFlashAttribute("mno", title + "追加完了");
+        return "redirect:/movie/list";
+    }
+
     @GetMapping("/list")
     public void get(PageRequestDTO pageRequestDTO, Model model) {
         log.info("映画リストリクエスト{}", pageRequestDTO);
 
         PageResultDTO<MovieDTO> result = movieService.getMovieList(pageRequestDTO);
         model.addAttribute("result", result);
+    }
+
+    @GetMapping({ "/read", "/modify" })
+    public void getRead(Long mno, Model model) {
+        log.info("read or modify {}", mno);
+        MovieDTO dto = movieService.getRow(mno);
+        model.addAttribute("dto", dto);
     }
 
 }

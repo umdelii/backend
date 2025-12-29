@@ -38,6 +38,8 @@
                       class="object-cover w-full h-full rounded-full"
                       alt=""
                       loading="lazy"
+                      th:if="${dto.movieImages.size() > 0 && dto.movieImages[0].path != null}"
+                      th:src="|/upload/display?fileName=${dto.movieImages[0].getThumbnailURL}|"
                     />
                     <div
                       class="absolute inset-0 rounded-full shadow-inner"
@@ -46,7 +48,10 @@
                   </div>
                   <div>
                     <p class="font-semibold">
-                      <a href="" th:text="${dto.title}"></a>
+                      <a
+                        th:href="@{read(mno=${dto.mno})}"
+                        th:text="${dto.title}"
+                      ></a>
                     </p>
                   </div>
                 </div>

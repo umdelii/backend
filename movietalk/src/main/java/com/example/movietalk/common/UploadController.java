@@ -1,6 +1,7 @@
 package com.example.movietalk.common;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.time.LocalDate;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 
 import lombok.extern.log4j.Log4j2;
+import net.coobird.thumbnailator.Thumbnailator;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.movietalk.movie.dto.MovieImageDTO;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Log4j2
@@ -54,15 +58,25 @@ public class UploadController {
 
             // uuid 生成
             String uuid = UUID.randomUUID().toString();
-            // ファイル名
+            // クライアントがアップロードしたファイル名
             String oriName = file.getOriginalFilename();
-            String saveName = uploadPath + File.separator + saveDirPath + File.separator + uuid + "_" + oriName;
 
+            // 保存情報を画面に送るための客体
             upList.add(MovieImageDTO.builder().path(saveDirPath).imgName(oriName).uuid(uuid).build());
 
             try {
                 // file 保存
-                file.transferTo(new File(saveName));
+                // upload/2025/12/24/~~~_test0.jpg
+                String saveName = uploadPath + File.separator + saveDirPath + File.separator + uuid + "_" + oriName;
+                File saveFile = new File(saveName);
+                file.transferTo(saveFile);
+
+                // thumbnail 保存
+                String thumbSaveName = uploadPath + File.separator + saveDirPath + File.separator + "s_" + uuid + "_"
+                        + oriName;
+                File thumbFile = new File(thumbSaveName);
+                Thumbnailator.createThumbnail(saveFile, thumbFile, 100, 100);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -74,14 +88,16 @@ public class UploadController {
     // 이미지 화면에 보여주기
     @GetMapping("/display")
     public ResponseEntity<byte[]> getFile(String fileName) {
+        log.info("display {}", fileName);
 
         ResponseEntity<byte[]> result = null;
 
         try {
-            String srcFileName = URLEncoder.encode(fileName, "utf-8");
+            String srcFileName = URLDecoder.decode(fileName, "utf-8");
             File file = new File(uploadPath + File.separator + srcFileName);
 
             HttpHeaders headers = new HttpHeaders();
+            // image/png
             headers.add("Content-Type", Files.probeContentType(file.toPath()));
             result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
 
@@ -108,6 +124,35 @@ public class UploadController {
             file.mkdirs();
         }
         return dateStr;
+    }
+
+    // ファイル削除
+    @PostMapping("/remove")
+    public ResponseEntity<String> removeFile(String fileName) {
+        log.info("消すファイル名 {}", fileName);
+
+        ResponseEntity<String> result = null;
+
+        try {
+            // %2F => /
+            String srcFileName = URLDecoder.decode(fileName, "utf-8");
+            File file = new File(uploadPath + File.separator + srcFileName);
+
+            //
+            file.delete();
+
+            // サムネ削除
+            File thumbFile = new File(file.getParent(), "s_" + file.getName());
+            thumbFile.delete();
+
+            result = new ResponseEntity<>("success", HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return result;
     }
 
 }

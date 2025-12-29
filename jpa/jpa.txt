@@ -210,8 +210,14 @@ HttpServletRequest : 사용자의 요청을 가지고 오는 객체
 HttpServletResponse : 사용자에게 응답을 하는 객체
 
 
-                      th:if="${dto.movieImages.size() > 0 && movieImages[0].path != null}"
-                      th:src="|/upload/display?fileName=${dto.movieImages[0].getThumbnailURL}|"
 
 
+자바 웹 어플리케이션 개발
+ => jsp/servlet 이용(개발자가 해야할 일이 많음)
+ => 개발을 편하게 하기 위해 spring프레임워크 개발(하위부분에 servlet을 기반으로 하고 있음)
+    ex. HttpServletRequest 객체 request 가져올 수 있었음
 
+파일 업로드
+ => servlet 기능 이용(application.properties 설정)
+ => MultipartFile 객체로 파일 업로드 처리 가능
+ => 저장 : 폴더 구분(날짜별 정리) / 중복이름(uuid) 방지

@@ -1,6 +1,8 @@
 package com.example.movietalk.movie.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -17,6 +19,7 @@ import com.example.movietalk.movie.dto.PageRequestDTO;
 import com.example.movietalk.movie.dto.PageResultDTO;
 import com.example.movietalk.movie.entity.Movie;
 import com.example.movietalk.movie.entity.MovieImage;
+import com.example.movietalk.movie.repository.MovieImageRepository;
 import com.example.movietalk.movie.repository.MovieRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -28,11 +31,49 @@ import lombok.extern.log4j.Log4j2;
 @Transactional
 public class MovieService {
     private final MovieRepository movieRepository;
+    private final MovieImageRepository movieImageRepository;
+
+    // cascade前
+    // public Long create(MovieDTO dto) {
+    // Map<String, Object> map = dtoToEntity(dto);
+    // // 映画
+    // Movie movie = (Movie) map.get("movie");
+    // movieRepository.save(movie);
+    // // 映画のイメージ
+    // MovieImage movieImage = (MovieImage) map.get("imageLists");
+    // movieImageRepository.save(movieImage);
+
+    // return movie.getMno();
+    // }
+
+    // CASCADE後
+    public String create(MovieDTO dto) {
+        Movie movie = dtoToEntity(dto);
+        movieRepository.save(movie);
+        return movie.getTitle();
+    }
+
+    // read
+    // ひとつ
+    @Transactional(readOnly = true)
+    public MovieDTO getRow(Long mno) {
+        List<Object[]> result = movieRepository.getMovieWithAll(mno);
+        // Movie 配列の一番目の映画の情報だけ取得
+        Movie movie = (Movie) result.get(0)[0];
+
+        List<MovieImage> movieImages = result.stream().map(en -> (MovieImage) en[1]).collect(Collectors.toList());
+
+        // reivew数 / 評価
+        Long reviewCnt = (Long) result.get(0)[2];
+        Double avg = (Double) result.get(0)[3];
+
+        return entityToDto(movie, movieImages, reviewCnt, avg);
+    }
 
     // 全部
     @Transactional(readOnly = true)
     public PageResultDTO<MovieDTO> getMovieList(PageRequestDTO pageRequestDTO) {
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(),
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize(),
                 Sort.by("mno").descending());
         Page<Object[]> result = movieRepository.getListPage(pageable);
 
@@ -58,12 +99,6 @@ public class MovieService {
                 .build();
     }
 
-    // ひとつ
-    @Transactional(readOnly = true)
-    public void getMovie(Long mno) {
-        movieRepository.getMovieWithAll(mno);
-    }
-
     private MovieDTO entityToDto(Movie movie, List<MovieImage> movieImages, Long reviewCnt, Double avg) {
         MovieDTO dto = MovieDTO.builder()
                 .mno(movie.getMno())
@@ -86,5 +121,60 @@ public class MovieService {
         dto.setMovieImages(imagesDTOs);
 
         return dto;
+    }
+
+    // cascade前
+    // private Map<String, Object> dtoToEntity(MovieDTO dto) {
+
+    // Map<String, Object> entityMap = new HashMap<>();
+
+    // Movie movie = Movie.builder()
+    // .mno(dto.getMno())
+    // .title(dto.getTitle())
+    // .build();
+
+    // entityMap.put("movie", movie);
+
+    // List<MovieImageDTO> imagesDTOs = dto.getMovieImages();
+    // if (imagesDTOs != null && imagesDTOs.size() > 0) {
+
+    // List<MovieImage> imageLists = imagesDTOs.stream().map(movieImage -> {
+    // return MovieImage.builder()
+    // .inum(movieImage.getInum())
+    // .uuid(movieImage.getUuid())
+    // .path(movieImage.getPath())
+    // .imgName(movieImage.getImgName())
+    // .movie(movie)
+    // .build();
+    // }).collect(Collectors.toList());
+
+    // entityMap.put("imageLists", imageLists);
+    // }
+    // return entityMap;
+    // }
+
+    // CASCADE後
+    public Movie dtoToEntity(MovieDTO dto) {
+        Movie movie = Movie.builder()
+                .mno(dto.getMno())
+                .title(dto.getTitle())
+                .build();
+
+        List<MovieImageDTO> imagesDTOs = dto.getMovieImages();
+        if (imagesDTOs != null && imagesDTOs.size() > 0) {
+
+            imagesDTOs.stream().forEach(movieImage -> {
+                MovieImage image = MovieImage.builder()
+                        .inum(movieImage.getInum())
+                        .imgName(movieImage.getImgName())
+                        .uuid(movieImage.getUuid())
+                        .path(movieImage.getPath())
+                        .movie(movie)
+                        .build();
+                movie.addImage(image);
+            });
+        }
+
+        return movie;
     }
 }
