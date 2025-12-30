@@ -1,24 +1,25 @@
-// 登録ボタンsumbit
-// submit 中止
-// uploadResult liの情報収集した後 form hidden タグにappend
-
-document.querySelector("#create-form").addEventListener("submit", (e) => {
+// 削除
+document.querySelector(".uploadResult i").addEventListener("click", (e) => {
   e.preventDefault();
+  console.log("イベント対象 ", e.target);
 
-  const attachInfos = document.querySelectorAll(".uploadResult li");
+  const aTag = e.target.closest("a");
+  const li = e.target.closest("li");
+  // href
+  console.log("属性値 ", aTag.getAttribute("href"));
+  const href = aTag.getAttribute("href");
 
-  let result = "";
-
-  attachInfos.forEach((obj, idx) => {
-    result += `<input type="hidden" name="movieImages[${idx}].imgName" value="${obj.dataset.name}">`;
-    result += `<input type="hidden" name="movieImages[${idx}].uuid" value="${obj.getAttribute(
-      "data-uuid"
-    )}">`;
-    result += `<input type="hidden" name="movieImages[${idx}].path" value="${obj.dataset.path}">`;
-  });
-
-  e.target.insertAdjacentHTML("beforeend", result);
-
-  console.log(e.target.innerHTML);
-  e.target.submit();
+  // controller
+  const formData = new FormData();
+  formData.append("fileName", href);
+  fetch("/upload/remove", {
+    method: "post",
+    body: formData,
+  })
+    .then((res) => res.text())
+    .then((data) => {
+      console.log(data);
+      // 画面上のイメージも消す
+      li.remove();
+    });
 });

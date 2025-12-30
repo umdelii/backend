@@ -146,4 +146,14 @@ public class MovieRepositoryTest {
         memberRepository.deleteById(2L);
     }
 
+    @Test
+    @Transactional
+    @Commit
+    public void deleteByMoiveTest() {
+
+        Movie movie = movieRepository.findById(402L).get();
+        movieImageRepository.deleteByMovie(movie);
+        movieRepository.delete(movie);
+    }
+
 }

@@ -160,10 +160,10 @@ public class MovieService {
                 .title(dto.getTitle())
                 .build();
 
-        List<MovieImageDTO> imagesDTOs = dto.getMovieImages();
-        if (imagesDTOs != null && imagesDTOs.size() > 0) {
+        List<MovieImageDTO> imageDTOs = dto.getMovieImages();
+        if (imageDTOs != null && imageDTOs.size() > 0) {
 
-            imagesDTOs.stream().forEach(movieImage -> {
+            imageDTOs.stream().forEach(movieImage -> {
                 MovieImage image = MovieImage.builder()
                         .inum(movieImage.getInum())
                         .imgName(movieImage.getImgName())
@@ -176,5 +176,33 @@ public class MovieService {
         }
 
         return movie;
+    }
+
+    public Long updateRow(MovieDTO dto) {
+
+        // title 変更
+        Movie movie = movieRepository.findById(dto.getMno()).get();
+        movie.setTitle(dto.getTitle());
+
+        // 映画のイメージ削除
+        movieImageRepository.deleteByMovie(movie);
+
+        // 新しく image 追加
+        movie = dtoToEntity(dto);
+        movie.getMovieImages().forEach(movieImageRepository::save);
+
+        return movie.getMno();
+
+    }
+
+    // 削除
+    public void deleteRow(Long mno) {
+
+        // delete image
+        Movie movie = movieRepository.findById(mno).get();
+        movieImageRepository.deleteByMovie(movie);
+
+        // movie
+        movieRepository.delete(movie);
     }
 }
