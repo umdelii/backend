@@ -23,4 +23,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("delete from Review r where r.member = :member")
     @Modifying
     void deleteByMember(Member member);
+
+    // 映画をdeleteしたらreviewを削除
+    @Query("delete from Review r where r.movie = ?1")
+    @Modifying
+    void deleteByMovie(Movie movie);
 }

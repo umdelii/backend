@@ -69,10 +69,12 @@ public class SecurityConfig {
                 .requestMatchers("/", "/assets/**", "/img/**", "/js/**").permitAll()
                 .anyRequest().permitAll());
 
+        http.formLogin(login -> login.loginPage("/member/login").permitAll());
+
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
         // csrf 中止
-        http.csrf(csrf -> csrf.disable());
+        // http.csrf(csrf -> csrf.disable());
         // http.csrf(csrf -> csrf.ignoringRequestMatchers("/replies/**"));
 
         return http.build();

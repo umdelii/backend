@@ -129,11 +129,16 @@ public class MovieRepositoryTest {
 
     @Test
     public void getMovieReviewTest() {
-        List<Review> result = reviewRepository.findByMovie(Movie.builder().mno(9L).build());
+        List<Review> result = reviewRepository.findByMovie(Movie.builder().mno(89L).build());
         result.forEach(r -> {
-            System.out.println(r);
+            System.out.print(r + "\t");
             // レビュー投稿者照会
-            System.out.println(r.getMember().getEmail());
+            System.out.print(r.getMember().getMid() + "\t");
+            System.out.print(r.getMember().getEmail() + "\t");
+            System.out.print(r.getMember().getNickname() + "\t");
+
+            // 映画照会
+            System.out.println(r.getMovie().getMno());
         });
     }
 

@@ -21,6 +21,7 @@ import com.example.movietalk.movie.entity.Movie;
 import com.example.movietalk.movie.entity.MovieImage;
 import com.example.movietalk.movie.repository.MovieImageRepository;
 import com.example.movietalk.movie.repository.MovieRepository;
+import com.example.movietalk.movie.repository.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,6 +33,7 @@ import lombok.extern.log4j.Log4j2;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final MovieImageRepository movieImageRepository;
+    private final ReviewRepository reviewRepository;
 
     // cascade前
     // public Long create(MovieDTO dto) {
@@ -201,6 +203,9 @@ public class MovieService {
         // delete image
         Movie movie = movieRepository.findById(mno).get();
         movieImageRepository.deleteByMovie(movie);
+
+        // review 削除
+        reviewRepository.deleteByMovie(movie);
 
         // movie
         movieRepository.delete(movie);
