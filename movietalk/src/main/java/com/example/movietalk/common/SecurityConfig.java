@@ -69,13 +69,16 @@ public class SecurityConfig {
                 .requestMatchers("/", "/assets/**", "/img/**", "/js/**").permitAll()
                 .anyRequest().permitAll());
 
-        http.formLogin(login -> login.loginPage("/member/login").permitAll());
+        http.formLogin(login -> login.loginPage("/member/login"));
+
+        http.logout(logout -> logout.logoutUrl("/member/logout").logoutSuccessUrl("/"));
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
         // csrf 中止
         // http.csrf(csrf -> csrf.disable());
         // http.csrf(csrf -> csrf.ignoringRequestMatchers("/replies/**"));
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/upload/**"));
 
         return http.build();
     }

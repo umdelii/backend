@@ -35,18 +35,21 @@ const reviewList = () => {
 
       let result = "";
       data.forEach((review) => {
-        result += `<div class="d-flex justify-content-between py-2 border-bottom review-row" data-rno="${review.rno}">`;
+        result += `<div class="d-flex justify-content-between py-2 border-bottom review-row" data-rno="${review.rno}" data-email="${review.email}">`;
         result += `<div class="flex-grow-1 align-self-center">`;
         result += `<div><span class="font-semibold">${review.text}</span></div>`;
         result += `<div class="small text-muted"><span class="d-inline-block mr-3">${review.nickname}</span>`;
-        result += `評価 : <span class="grade">${review.grade}</span><div class="starrr"></div></div>`;
+        result += `평점 : <span class="grade">${review.grade}</span><div class="starrr"></div></div>`;
         result += `<div class="text-muted"><span class="small">${formatDate(
-          review.updateDate
+          review.createDate
         )}</span></div></div>`;
-        result += `<div class="d-flex flex-column align-self-center">`;
-        result += `<div><button class="btn btn-outline-success btn-sm">変更</button></div>`;
-        result += `<div class="mb-2"><button class="btn btn-outline-danger btn-sm">削除</button></div>`;
-        result += `</div></div>`;
+        if (loginUser == `${review.email}`) {
+          result += `<div class="d-flex flex-column align-self-center">`;
+          result += `<div><button class="btn btn-outline-success btn-sm">変更</button></div>`;
+          result += `<div class="mb-2"><button class="btn btn-outline-danger btn-sm">修正</button></div>`;
+          result += `</div>`;
+        }
+        result += `</div>`;
       });
 
       reviewListClass.innerHTML = result;
@@ -70,11 +73,13 @@ const reviewGet = (rno) => {
       console.log("get");
       console.log(data);
 
-      reviewForm.nickname.value = data.nickname;
+      // #authenticationからデータ取得
+      // reviewForm.nickname.value = data.nickname;
       reviewForm.text.value = data.text;
       reviewForm.rno.value = data.rno;
       reviewForm.mid.value = data.mid;
       reviewForm.mno.value = data.mno;
+      reviewForm.email.value = data.email;
       reviewForm
         .querySelector(".starrr a:nth-child(" + data.grade + ")")
         .click();
@@ -83,9 +88,14 @@ const reviewGet = (rno) => {
 };
 
 // delete(口コミ削除)関数
-const reviewDelete = (rno) => {
+const reviewDelete = (rno, email) => {
+  const form = new FormData();
+  form.append("email", email);
+
   fetch(`${baseUrl}/${mno}/${rno}`, {
     method: "delete",
+    headers: { "X-CSRF-TOKEN": csrfVal },
+    body: form,
   })
     .then((res) => {
       if (!res.ok) {
@@ -106,10 +116,11 @@ const reviewDelete = (rno) => {
 reviewListClass.addEventListener("click", (e) => {
   const btn = e.target;
   const rno = btn.closest(".review-row").getAttribute("data-rno");
+  const email = btn.closest(".review-row").getAttribute("data-email");
   console.log(btn);
 
   if (btn.classList.contains("btn-outline-danger")) {
-    reviewDelete(rno);
+    reviewDelete(rno, email);
   } else if (btn.classList.contains("btn-outline-success")) {
     reviewGet(rno);
   }
@@ -119,11 +130,12 @@ reviewListClass.addEventListener("click", (e) => {
 const reviewPut = (form, rno) => {
   fetch(`${baseUrl}/${mno}/${rno}`, {
     method: "put",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": csrfVal },
     body: JSON.stringify({
       rno: rno,
       text: form.text.value,
       grade: grade,
+      email: form.email.value,
     }),
   })
     .then((res) => {
@@ -148,15 +160,16 @@ const reviewPut = (form, rno) => {
 };
 
 // 口コミ post 関数
-const reviewPost = (form) => {
+const reviewPost = (form, rno) => {
   fetch(`${baseUrl}/${mno}`, {
     method: "post",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": csrfVal },
     body: JSON.stringify({
       mno: mno,
-      mid: "1",
+      mid: reviewForm.mid.value,
       text: reviewForm.text.value,
       grade: grade,
+      rno: rno,
     }),
   })
     .then((res) => {
@@ -180,20 +193,22 @@ const reviewPost = (form) => {
 };
 
 // 登録OR修正
-reviewForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  // rno 有無
-  const form = e.target;
-  const rno = form.rno.value;
+if (reviewForm) {
+  reviewForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    // rno 有無
+    const form = e.target;
+    const rno = form.rno.value;
 
-  if (rno) {
-    // 修正
-    reviewPut(form, rno);
-  } else if (rno !== null) {
-    // 新規
-    reviewPost(form);
-  }
-});
+    if (rno) {
+      // 修正
+      reviewPut(form, rno);
+    } else if (rno !== null) {
+      // 新規
+      reviewPost(form, rno);
+    }
+  });
+}
 
 // image 拡大
 const imgModal = document.getElementById("imgModal");

@@ -25,6 +25,12 @@
         </h1>
         <!-- thymeleaf action => csrf -->
         <form th:action="@{/member/login}" method="post">
+          <div th:if="${param.error}">
+            <div class="alert alert-danger text-center">
+              IDまたはPWを確認してください
+            </div>
+          </div>
+
           <label class="block text-sm">
             <span class="text-gray-700 dark:text-gray-400">Email</span>
             <input
@@ -64,7 +70,7 @@
         <p class="mt-1">
           <a
             class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
-            href=""
+            th:href="@{/member/register}"
           >
             Create account
           </a>

@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class ReviewController {
 
     // 指定映画の口コミ全部取得
     @GetMapping("/{mno}/all")
+    @PreAuthorize("isAuthenticated()")
     public List<ReviewDTO> getAllReviews(@PathVariable Long mno) {
 
         log.info("mno {}", mno);
@@ -61,6 +63,8 @@ public class ReviewController {
     }
 
     @PutMapping("/{mno}/{rno}")
+    // loginユーザー==レビューユーザー
+    @PreAuthorize("authentication.name == #dto.email")
     public ResponseEntity<Long> putReview(@PathVariable Long rno, @RequestBody ReviewDTO dto) {
 
         log.info("修正 dto {}", dto);
@@ -74,9 +78,10 @@ public class ReviewController {
 
     // 指定映画の口コミ削除
     @DeleteMapping("/{mno}/{rno}")
-    public ResponseEntity<String> deleteReview(@PathVariable Long rno) {
+    @PreAuthorize("authentication.name == #email")
+    public ResponseEntity<String> deleteReview(@PathVariable Long rno, String email) {
 
-        log.info("削除 rno {}", rno);
+        log.info("削除 rno, email {} {}", rno, email);
 
         reviewService.deleteRow(rno);
 

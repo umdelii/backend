@@ -1,5 +1,6 @@
 package com.example.movietalk.movie.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -24,11 +25,13 @@ public class MoiveController {
     private final MovieService movieService;
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public void getCreate(PageRequestDTO pageRequestDTO) {
         log.info("create form 要請");
     }
 
     @PostMapping("create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String postCreate(MovieDTO dto, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("映画追加要請 {}", dto);
 
@@ -41,7 +44,7 @@ public class MoiveController {
     }
 
     @GetMapping("/list")
-    public void get(PageRequestDTO pageRequestDTO, Model model) {
+    public void getList(PageRequestDTO pageRequestDTO, Model model) {
         log.info("映画リストリクエスト{}", pageRequestDTO);
 
         PageResultDTO<MovieDTO> result = movieService.getMovieList(pageRequestDTO);
@@ -49,6 +52,7 @@ public class MoiveController {
     }
 
     @GetMapping({ "/read", "/modify" })
+    @PreAuthorize("isAuthenticated()")
     public void getRead(Long mno, PageRequestDTO pageRequestDTO, Model model) {
         log.info("read or modify {}", mno);
         MovieDTO dto = movieService.getRow(mno);
@@ -56,6 +60,7 @@ public class MoiveController {
     }
 
     @PostMapping("/modify")
+    @PreAuthorize("hasRole('ADMIN')")
     public String postModify(MovieDTO dto, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("映画modify {}", dto);
 
@@ -68,6 +73,7 @@ public class MoiveController {
     }
 
     @PostMapping("/remove")
+    @PreAuthorize("hasRole('ADMIN')")
     public String postRemove(Long mno, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("mno {}", mno);
         movieService.deleteRow(mno);
