@@ -1,5 +1,6 @@
 package com.example.movietalk.movie.service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,10 @@ public class MovieService {
         // dtolist.add(dto);
         // });
 
-        Function<Object[], MovieDTO> function = (obj -> entityToDto((Movie) obj[0], List.of((MovieImage) obj[1]),
+        Function<Object[], MovieDTO> function = (obj -> entityToDto((Movie) obj[0],
+                List.of((MovieImage) obj[1]),
+                // Function<Object[], MovieDTO> function = (obj -> entityToDto((Movie) obj[0],
+                // Arrays.asList((MovieImage) obj[1]),
                 (Long) obj[2], (Double) obj[3]));
 
         List<MovieDTO> dtolist = result.stream().map(function).collect(Collectors.toList());

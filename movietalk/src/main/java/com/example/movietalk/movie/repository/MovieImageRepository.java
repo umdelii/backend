@@ -1,5 +1,7 @@
 package com.example.movietalk.movie.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +18,8 @@ public interface MovieImageRepository extends JpaRepository<MovieImage, Long> {
     @Query("delete from MovieImage mi where mi.movie = :movie")
     @Modifying
     void deleteByMovie(Movie movie);
+
+    // 過去ファイルのpath取得
+    @Query("select mi from MovieImage mi where mi.path = ?1")
+    List<MovieImage> getOldFileImages(String path);
 }

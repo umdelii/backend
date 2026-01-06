@@ -223,3 +223,6 @@ HttpServletResponse : 사용자에게 응답을 하는 객체
  => 저장 : 폴더 구분(날짜별 정리) / 중복이름(uuid) 방지
 
 페이징 
+
+설정 관련
+properties => yml

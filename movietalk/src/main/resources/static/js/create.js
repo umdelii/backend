@@ -1,5 +1,5 @@
 // 削除
-document.querySelector(".uploadResult i").addEventListener("click", (e) => {
+document.querySelector(".uploadResult").addEventListener("click", (e) => {
   e.preventDefault();
   console.log("イベント対象 ", e.target);
 

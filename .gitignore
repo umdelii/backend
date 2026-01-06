@@ -6,6 +6,7 @@
 **/.gitignore
 **/.gitattributes
 **/src/main/resources/application-oauth.properties
+**/application-oauth.yml
 
 # board/src/main/resources/application-oauth.properties
 # movietalk/src/main/resources/application-oauth.properties
