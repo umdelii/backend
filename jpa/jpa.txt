@@ -226,3 +226,59 @@ HttpServletResponse : 사용자에게 응답을 하는 객체
 
 설정 관련
 properties => yml
+
+maven 기반 vs gradle 기반
+    -둘 다 프로젝트 관리가 목적 : 컴파일, 빌드, 테스트, 패키징, 의존성관리 등
+    vscode같은 ide(통합개발환경)은 프로젝트가 커지면 한계가 있어 도움을 받음
+    ex. A.java => 컴파일 => A.class => 실행
+
+    - 빌드 단위 : 프로젝트
+
+    패키징 : jar or war
+
+    maven 
+        pom.xml 파일
+        좀 더 오래됨, 전통방식
+    gradle 
+        build.gradle 파일
+        maven보다 최신
+
+gradle
+    - dependencies{...} : 프로젝트가 실행되기 위해 필요한 라이브러리들
+        => Maven Central(라이브러리 다운로드 받을 곳) 접속
+        => 라이브러리 다운로드
+    
+    implementation : 내부 사용
+    complieOnly : 컴파일 시에만 사용
+    developmentOnly : 개발 시 에만 사용
+
+    ./gradlew : Graddle Wrapper
+    - 로컬에 gradle 설치하지 않아도됨
+    - spring-boot-gradle-plugin
+        bootRun : 앱 실행
+        bootJar : jar 작성
+        dependencyManagement : 버전 자동 관리
+    명령어
+        ./gradlew build : build task 실행
+         1. settings.gradle 읽기 : 어떤 프로젝트를 빌드할 것인가?
+         2. build.gradle 실행 
+         3. 실행 : 요청한 task 실행
+            단계(build)
+            1 compileJava : .java => .class
+            2 processResources : .class 파일을 build 디렉토리로 복사/가공
+            3 test 
+            4 jar / bootJar : 서비스 가능한 파일 생성
+        
+        ./gradlew compileJava : compile해줘서 build파일안에 class생성
+        ./gradlew classes : compileJava+processResources
+        ./gradlew test : compileJava+processResources+test
+            - @Test 메소드만 실행
+            - JUnit을 실행
+            - @Transactional / @SpringBootTest / @AutoWired ...는 SpringBoot가 처리
+        ./gradlew bootJar : 실행 가능한 jar 생성(필요한 라이브러리+내장톰캣)
+            java -jar 파일명
+        
+        ./gradlew build -x test : test task 제외하고 build
+        ./gradlew bootRun : 서버까지 올려줘(*Application.java의 main class run)
+            - jar생성은 안함(개발 중 test용도)
+        ./gradlew clean : lib 제거

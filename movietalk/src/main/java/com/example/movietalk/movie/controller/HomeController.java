@@ -10,4 +10,8 @@ public class HomeController {
         return "redirect:/movie/list";
     }
 
+    @GetMapping("/access/denied")
+    public void getDenied() {
+    }
+
 }

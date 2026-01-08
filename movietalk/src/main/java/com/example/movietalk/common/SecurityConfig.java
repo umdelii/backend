@@ -67,12 +67,21 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/", "/assets/**", "/img/**", "/js/**").permitAll()
-                .anyRequest().permitAll());
+                .requestMatchers("/movie/list").permitAll()
+                .requestMatchers("/member/register").permitAll()
+                .requestMatchers("/upload/display/**").permitAll()
+                .requestMatchers("/movie/create").hasRole("ADMIN")
+                .anyRequest().authenticated());
 
-        http.formLogin(login -> login.loginPage("/member/login"));
+        http.formLogin(login -> login
+                .loginPage("/member/login").permitAll()
+                // .defaultSuccessUrl("/movie/list", true) 로그인 성공 후 정해진 경로가 단순할 때
+                // or
+                .successHandler(loginSuccessHandler()));
 
         http.logout(logout -> logout.logoutUrl("/member/logout").logoutSuccessUrl("/"));
 
+        // session 設定
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
         // csrf 中止
@@ -80,13 +89,21 @@ public class SecurityConfig {
         // http.csrf(csrf -> csrf.ignoringRequestMatchers("/replies/**"));
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/upload/**"));
 
+        // exception handling
+        http.exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler()));
+
         return http.build();
     }
 
-    // @Bean
-    // LoginSuccessHandler loginSuccessHandler() {
-    // return new LoginSuccessHandler();
-    // }
+    @Bean
+    LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
+    CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
