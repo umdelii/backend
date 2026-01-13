@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.movietalk.movie.dto.ReviewDTO;
 import com.example.movietalk.movie.service.ReviewService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
+@Tag(name = "Response Review", description = "Response Review API")
 @Log4j2
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
@@ -55,7 +58,8 @@ public class ReviewController {
 
     // 指定映画の口コミ修正
     @GetMapping("/{mno}/{rno}")
-    public ReviewDTO getReview(@PathVariable Long rno) {
+    @Operation(summary = "指定映画の口コミ取得", description = "指定映画の口コミ取得 API")
+    public ReviewDTO getReview(@PathVariable Long mno, @PathVariable Long rno) {
 
         log.info("修正 rno {}", rno);
 

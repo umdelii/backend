@@ -38,6 +38,8 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	//thumbnail
 	implementation 'net.coobird:thumbnailator:0.4.21'
+	// swagger - postman처럼 restapi를 웹에서 테스트할 수 있게 도와주는 툴
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.15'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
