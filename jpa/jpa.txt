@@ -9,7 +9,7 @@ jpa 프로젝트 생성
 데이터베이스 작업을 쉽게 도와주는 라이브러리가 있다! 
 1. MyBatis
 2. ORM(Object Relational Mapping)
-    테이블 행 하나 == 객체 (개념)
+    테이블 행 하나 == 객체 (개념)관리자 페이지
     --> ORM개념을 실제로 기술로 만들어낸것이 Hibernate
     --> JPA(Java Persistence API) : java라는 언어에서 DB관련한 API
 
@@ -349,6 +349,10 @@ swagger : rest API를 웹에서 확인, 점검할 수 있는 툴
 
         type : enum과 비슷한 역할로 쓰임
 
+    Omit<객체,'객체에서 바꿀 항목'> & {바꿀항목:타입}
+    
+    await : axios
+
 
 
 react : 
@@ -379,9 +383,11 @@ react :
     2. cd 경로 
     3. npm i -D tailwindcss @tailwindcss/vite prettier-plugin-tailwindcss
         prettier-plugin-tailwindcss  => tailwind 클래스 이름 자동정렬(공식 권장 순서)
+       npm i axios (엑시오스)
+       npm i react-icons --save (리액트에서 사용할 수 있는 아이콘들)
     4. eslint.config.js에 rules 추가
     5. vite.config.ts 수정
-        tailwindcss 추가
+        tailwindcss 추가(plugin, import)
     6. index.css 수정 - import
     7. .prettierrc 설정 => 플러그인설정 
 
@@ -397,7 +403,34 @@ react :
     readonly => readOnly
     maxlength => maxLength
 
-    props
+    props : 컴포넌트 간 데이터 공유
+
+    children : 컴포넌트 태그 사이의 내용
+
+    state : 컴포넌트 내부에서 변경될 수 있는 값
+
+    *** 중요 함수 Hook *** 
+    useState() : 렌더링과 관련 
+                부모 렌더링 시 자식도 같이 렌더링
+                자식의 state가 변경될 때는 자식만
+    useState()로 상태를 저장, 변경값을 주어서 화면상 변경이 생기면 기존 DOM를 파괴하고 re렌더링해서 화면에 뿌림
+    useRef() : 렌더링과는 별개로 변수를 사용하거나, DOM 요소에 직접 접근할 때 사용
+                렌더링 될 때 값이 초기화 되지않음
+    useEffect() : 리액트 컴포넌트의 생명주기에 맞춰 어떤 작업 수행 시 사용
+                1. Mounting : DOM이 생성되고 웹 브라우저 상에 나타나는 상황(컴포넌트가 처음으로 렌더링되는 시점)
+                2. Unmounting : 마운트 반대과정(컴포넌트를 DOM에서 제거하는 시점)
+                3. Updating : props 변경 / state 변경 / 부모 컴포넌트가 리렌더링 될 때
+    useReducer() : state를 한번에 관리 
+                프로젝트의 상태 로직이 복잡할 때 사용
+    useMemo() : 시간이 많이 걸리는 함수, 리렌더링 되지 않아도 되는 컴포넌트에 적용
+    useCallback() : 자식에게 내려가는 함수가 많고, 렌더링 비용이 클때
+
+    디자인(html과 유사)
+     1) *.css => import해서 사용
+     2) tsx 파일내에 객체로 만들어 => inline방식
+     3) 태그 안 직접 선언 => {{color:'',fontSize:''}}
+     4) css module : 기존 css 클래스명을 중복되지않게 작성
+        파일명_클래스명_해시값 형태로 자동으로 만들어 버림
      
 
 vite : 프론트엔드 개발도구
