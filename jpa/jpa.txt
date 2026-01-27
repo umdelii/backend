@@ -385,6 +385,12 @@ react :
         prettier-plugin-tailwindcss  => tailwind 클래스 이름 자동정렬(공식 권장 순서)
        npm i axios (엑시오스)
        npm i react-icons --save (리액트에서 사용할 수 있는 아이콘들)
+       npm i react-router-dom (라우팅 : 사용자가 요청한 url에 따라 알맞은 페이지 보여주기)
+            리액트에서 라우팅 사용 
+            1. 라이브러리 사용: react-router-dom
+            2. Next.js 사용
+        npm install @reduxjs/toolkit : redux
+        npm install react-redux : redux
     4. eslint.config.js에 rules 추가
     5. vite.config.ts 수정
         tailwindcss 추가(plugin, import)
@@ -410,6 +416,7 @@ react :
     state : 컴포넌트 내부에서 변경될 수 있는 값
 
     *** 중요 함수 Hook *** 
+    여러 컴포넌트에서 비슷한 기능을 공유할 경우
     useState() : 렌더링과 관련 
                 부모 렌더링 시 자식도 같이 렌더링
                 자식의 state가 변경될 때는 자식만
@@ -423,7 +430,20 @@ react :
     useReducer() : state를 한번에 관리 
                 프로젝트의 상태 로직이 복잡할 때 사용
     useMemo() : 시간이 많이 걸리는 함수, 리렌더링 되지 않아도 되는 컴포넌트에 적용
+        useMemo(()=>({}),[]) : 첫 번째 인자의 함수는 기본적으로 컴포넌트가 리로드될때마다 새로운 함수로 인식
+                                [] 안에 들어있는 기준이 변경될때만 새로운 함수로 기억해라
     useCallback() : 자식에게 내려가는 함수가 많고, 렌더링 비용이 클때
+
+    Context
+        useContext() : 상태를 어디서든 쓰게 만들 때 사용
+        ==> useReducer() + useContext() => 상태처리
+        redux 라이브러리
+
+    react-router-dom
+    useNavigate() : useNavigate(경로,{replace?:boolean; state?:any})
+        => replace 어디로갈지, state 어떻게 갈지
+        => replace true 현재 페이지를 대체하며 이동 => 뒤로 가기했을 때 이전 페이지로 갈 수 없음
+        state : 데이터 담아서 전달시킴
 
     디자인(html과 유사)
      1) *.css => import해서 사용
@@ -431,6 +451,19 @@ react :
      3) 태그 안 직접 선언 => {{color:'',fontSize:''}}
      4) css module : 기존 css 클래스명을 중복되지않게 작성
         파일명_클래스명_해시값 형태로 자동으로 만들어 버림
+
+    * 주요 작동 원리 이해 *
+        todo의 경우
+        1. App.tsx 리렌더링 조건 
+         : useState() 선언에 변수들 : todos, isCompleted
+         기존의 화면 파괴하고 새로 화면 리렌더링해서 보여주기
+        
+        2. DB 작업
+         데이터 넘겨받기 => 화면에 보여주기
+        
+        3. 
+
+    react paginate : react에서 페이징 간단히 할 수 있게 해주는 라이브러리
      
 
 vite : 프론트엔드 개발도구
@@ -446,3 +479,9 @@ Tailwind CSS : vscode 확장프로그램
     vscode에서 클래스 자동 완성
 Tailwind Docs 
 Simple React Snippets : react 자동완성
+
+** 
+CORS(Cross-Origin Resource Sharing)
+ ex. springboot의 포트 : 8080 , react 포트 : 5173
+ - 브라우저는 기본적으로 출처가 다른 요청은 차단함
+ 그래서 해당 출처는 허용할 수 있게 설정해야함 => CORS 헤더 응답
