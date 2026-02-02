@@ -391,6 +391,7 @@ react :
             2. Next.js 사용
         npm install @reduxjs/toolkit : redux
         npm install react-redux : redux
+        npm i react-paginate --save : paging
     4. eslint.config.js에 rules 추가
     5. vite.config.ts 수정
         tailwindcss 추가(plugin, import)
@@ -444,6 +445,9 @@ react :
         => replace 어디로갈지, state 어떻게 갈지
         => replace true 현재 페이지를 대체하며 이동 => 뒤로 가기했을 때 이전 페이지로 갈 수 없음
         state : 데이터 담아서 전달시킴
+
+    useParams() : 파타메터값 가져오기
+    useSearchParams()
 
     디자인(html과 유사)
      1) *.css => import해서 사용
