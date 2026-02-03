@@ -17,6 +17,7 @@ spring:
         format_sql: true
         highlight_sql: true
 
+# 로그 설정
 logging:
   level:
     org:
@@ -25,3 +26,6 @@ logging:
         orm:
           jdbc:
             bind: trace
+      springframework:
+        security:
+          web: trace

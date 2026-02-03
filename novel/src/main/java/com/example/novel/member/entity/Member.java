@@ -32,7 +32,9 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    private String nickName;
+    private String nickname;
+
+    private boolean fromSocial;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default

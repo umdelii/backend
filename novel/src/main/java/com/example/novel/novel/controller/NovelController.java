@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,6 +55,7 @@ public class NovelController {
     // /api/novels/add + POST : 추가
     @Operation(summary = "novel 추가", description = "novel 추가 조회 API")
     @PostMapping("/add")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
     public Long postRow(@RequestBody NovelDTO dto) {
         log.info("novel 추가 요청 {}", dto);
 

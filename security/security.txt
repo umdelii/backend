@@ -5,6 +5,9 @@ This generated password is for development use only. Your security configuration
 위와 같이 뜬다.
 localhost:8080 접속하면 localhost:8080/login으로 액세스, 로그인 화면이 뜸
 
+Security가 하는 일 : 서버 컨트롤러의 접근을 제한한다.
+    ~Filter들을 통과해야 컨트롤러 접근 가능
+
 security
 ROLE
     회원가입 + ROLE 부여 ex.일반, 멤버, admin
@@ -31,3 +34,11 @@ Controller => get만 작성, post는 작성하지않는다(form에 action달면 
     로그아웃 => 세선 정보 제거
 을 UserDetailsService 구현화해서 메소드로 화인하기
 세션 유지는 UserDetails로 리턴하면 해줌
+
+
+** jwt : json web token
+    참고 : jwt.io 사이트
+
+    '.' 앞부분 : Header + Payload => Base64 인코딩 => 디코딩 가능
+    '.' 뒷부분 : 시그니처 암호화
+    

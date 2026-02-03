@@ -69,6 +69,12 @@ junit => java test해주는 제일 유명한 test 라이브러리
 https://mvnrepository.com/ 
 2. db 쿼리문을 실행해줄수있게하는 jpa 문
 https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
+3. 정규식 연습
+https://regexr.com/
+4. 부트스트랩
+https://getbootstrap.com/
+5. axios
+https://axios-http.com/
 
 
 
@@ -446,8 +452,10 @@ react :
         => replace true 현재 페이지를 대체하며 이동 => 뒤로 가기했을 때 이전 페이지로 갈 수 없음
         state : 데이터 담아서 전달시킴
 
-    useParams() : 파타메터값 가져오기
-    useSearchParams()
+    useParams() : 파라미터값 가져오기
+    useSearchParams() : 
+
+    slice : reducer + action(reducer 호출)
 
     디자인(html과 유사)
      1) *.css => import해서 사용
@@ -489,3 +497,32 @@ CORS(Cross-Origin Resource Sharing)
  ex. springboot의 포트 : 8080 , react 포트 : 5173
  - 브라우저는 기본적으로 출처가 다른 요청은 차단함
  그래서 해당 출처는 허용할 수 있게 설정해야함 => CORS 헤더 응답
+
+** 세션 & 토큰
+ 토큰 : 로그인 이후 서버가 만들어 주는 문자열
+    사용자의 로그인 정보와 해당 정보가 서버에서 발급 되었음을 증명하는 서명 존재
+    서버에서 사용자 로그인 정보를 기억하기 위해 사용하는 리소스가 적음
+    서버 확장성이 높음(서버의 인스턴스가 여러 개 늘어나도 서버끼리
+     사용자의 로그인 상태를 공유할 필요가 없음 = 토큰으로 해결)
+
+** 라이브러리
+ 1.token 
+    jwt token => jjwt
+ 2. gson
+    json <-> 객체 변환시켜주는 라이브러리
+
+ 3. 로그 라이브러리 
+    스프링부트 
+    Apache의 Log4j2 => 기본제공
+
+    로그 관리 방법
+        화면 출력 => 개발 시 확인용
+        파일 저장 
+        DB 저장
+    
+    로그레벨
+        trace : 흐름 추적, 개발 시 
+        debug : 디버깅, 개발 시
+        info : 정상동작, 운영서버 
+        warn : 경고, 운영서버
+        error : 오류, 운영서버
