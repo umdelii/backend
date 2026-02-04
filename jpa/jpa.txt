@@ -398,6 +398,7 @@ react :
         npm install @reduxjs/toolkit : redux
         npm install react-redux : redux
         npm i react-paginate --save : paging
+        npm i react-cookie : 쿠키 담는 라이브러리
     4. eslint.config.js에 rules 추가
     5. vite.config.ts 수정
         tailwindcss 추가(plugin, import)
@@ -456,6 +457,12 @@ react :
     useSearchParams() : 
 
     slice : reducer + action(reducer 호출)
+    useSelector() : store의 state를 가져올때 
+
+    ** 비동기과 동기
+    동기 : 예시. 내가 상대방에게 악수를 해줄때 반응해줄때까지 기다림, 반응 후에 다른 일을 함
+    비동기 : 악수를 청하고 상대방의 응답에 상관없이 자기 할 일을 함
+    Promise : fulfilled(성공), pending(대기), rejected(거부)
 
     디자인(html과 유사)
      1) *.css => import해서 사용

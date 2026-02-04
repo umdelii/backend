@@ -45,7 +45,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         http.formLogin(login -> login
-                .loginPage("/api/members/login")
+                .loginProcessingUrl("/api/members/login")
                 .successHandler(loginSuccessHandler())
                 .failureHandler(new LoginFailureHandler()));
 
@@ -57,6 +57,14 @@ public class SecurityConfig {
 
         // 필터 지정
         http.addFilterBefore(jwtCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.exceptionHandling(e -> e
+                .authenticationEntryPoint((req, res, ex) -> {
+                    res.setStatus(401);
+                })
+                .accessDeniedHandler((req, res, ex) -> {
+                    res.setStatus(406);
+                }));
 
         return http.build();
     }

@@ -45,6 +45,7 @@ public class MemberDTO extends User /* implements OAuth2User */ {
                 roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(Collectors.toList()));
         this.email = username; // username을 email로 받았기에
         this.password = password;
+        this.nickname = nickname;
         this.fromSocial = fromSocial;
         this.roles = roles;
     }
@@ -55,6 +56,7 @@ public class MemberDTO extends User /* implements OAuth2User */ {
         dataMap.put("password", password);
         dataMap.put("nickname", nickname);
         dataMap.put("social", fromSocial);
+        dataMap.put("roles", roles);
 
         return dataMap;
     }
