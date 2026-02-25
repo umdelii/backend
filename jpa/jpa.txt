@@ -533,3 +533,17 @@ CORS(Cross-Origin Resource Sharing)
         info : 정상동작, 운영서버 
         warn : 경고, 운영서버
         error : 오류, 운영서버
+
+
+
+================================
+ai
+
+터미널
+nano ~/.bashrc
+
+if [ -f "$PWD/.env" ]; then
+ set -a
+ source "$PWD/.env"
+ set +a
+fi
