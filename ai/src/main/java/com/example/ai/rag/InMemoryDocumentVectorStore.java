@@ -1,0 +1,49 @@
+package com.example.ai.rag;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.ai.document.Document;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Repository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
+@Repository
+@RequiredArgsConstructor
+@Log4j2
+public class InMemoryDocumentVectorStore {
+    private final VectorStore vectorStore;
+
+    public void addDocument(String docId, String fileText, Map<String, Object> metadata) {
+        log.info("문서 추가 {}, {}", docId, fileText);
+
+        try {
+            Map<String, Object> merged = new HashMap<>();
+
+            if (metadata != null) {
+                merged.putAll(metadata);
+            }
+
+            var document = new Document(fileText, merged);
+
+            var textsplitter = TokenTextSplitter.builder()
+                    .withChunkSize(512)
+                    .withMinChunkSizeChars(350)
+                    .withMinChunkLengthToEmbed(5)
+                    .withMaxNumChunks(10000)
+                    .withKeepSeparator(true)
+                    .build();
+
+            var chunks = textsplitter.split(document);
+            vectorStore.add(chunks); // 임베딩 변환하며 스토어에 추가
+
+        } catch (Exception e) {
+            throw new DocumentProcessingException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "fail to embedding or save: " + e.getMessage(), e);
+        }
+    }
+}
