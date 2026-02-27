@@ -16,6 +16,21 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
+  ai:
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      embedding:
+        options:
+          model: text-embedding-3-small
+      chat:
+        options:
+          model: gpt-5-nano
+          temperature: 1.0
 
 # 로그 설정
 logging:

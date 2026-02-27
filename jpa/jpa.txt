@@ -569,7 +569,7 @@ spring ai
 
     EmbeddingModel : float[] 벡터값 반환
 
-    RAG : LLM모델은 학습한 지식 안에서만 대답, 모델이 모르는 지식을 외부에서 검색(Retrieval)한 후 제공받기
+    RAG(Retrieval-Augmented Generation) 검색 증강 생성 : LLM모델은 학습한 지식 안에서만 대답, 모델이 모르는 지식을 외부에서 검색(Retrieval)한 후 제공받기
         - 외부에서 검색 PDF, DB, 파일, WEB URL...
         - embedding 처리 필요
         - 의미 기반 검색 : 키워드x 뜻이 비슷한 데이터를 찾는 것이 목표
@@ -584,7 +584,8 @@ spring ai
         TextSplitter
 
         저장
-        VectorStore
+        VectorStore => DB 필요
+            파이썬 FAISS
         
         Advisor:
         1) 직접 구현

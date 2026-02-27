@@ -22,6 +22,8 @@ public class NovelDTO {
     private String author;
     private boolean available;
     private LocalDate publishedDate;
+    private String plot;
+    private String aiDescription;
 
     private Long gid; // 장르 아이디
     private String genreName; // 장르명

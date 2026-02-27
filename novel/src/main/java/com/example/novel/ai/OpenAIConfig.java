@@ -1,18 +1,15 @@
-package com.example.ai.config;
+package com.example.novel.ai;
 
 import javax.sql.DataSource;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
-import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.memory.repository.jdbc.MysqlChatMemoryRepositoryDialect;
 import org.springframework.ai.embedding.EmbeddingModel;
-import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
@@ -23,20 +20,10 @@ public class OpenAIConfig {
 
     @Bean
     ChatClient chatClient(ChatClient.Builder builder, ChatMemory chatMemory, VectorStore vectorStore) {
-        // var ragRequest =
-        // SearchRequest.builder().topK(4).similarityThreshold(0.3).build();
-
         return builder
-                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build()
-                // ,QuestionAnswerAdvisor.builder(vectorStore).searchRequest(ragRequest).build()
-                )
+                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
     }
-
-    // // InMemory 이용 대화 내용 저장
-    // ChatMemoryRepository chatMemoryRepository() {
-    // return new InMemoryChatMemoryRepository(); // 서버 켜져있는 동안 지속
-    // }
 
     @Bean // DB 이용 대화 내용 저장
     ChatMemoryRepository chatMemoryRepository(DataSource dataSource) {

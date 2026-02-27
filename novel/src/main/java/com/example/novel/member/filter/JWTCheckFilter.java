@@ -48,10 +48,14 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         // return true;
         // }
 
-        if (path.startsWith("/api/novels")) {
-            if (request.getMethod().equals("GET")) {
-                return true;
-            }
+        // if (path.startsWith("/api/novels")) {
+        // if (request.getMethod().equals("GET")) {
+        // return true;
+        // }
+        // }
+
+        if (path.startsWith("/api/novels") && (request.getMethod().equals("GET"))) {
+            return true;
         }
 
         return false;
