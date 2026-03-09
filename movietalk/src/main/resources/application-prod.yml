@@ -9,4 +9,4 @@ com:
   example:
     movietalk:
       upload:
-        path: "upload"
+        path: "/root/app/upload"

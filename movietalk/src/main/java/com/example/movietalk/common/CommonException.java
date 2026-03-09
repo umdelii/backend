@@ -16,14 +16,14 @@ public class CommonException {
     @ExceptionHandler(NoResourceFoundException.class)
     public String notFound() {
         log.info("404 error");
-        return "/except/url404";
+        return "except/url404";
     }
 
     @ExceptionHandler(Exception.class)
     public String error(Exception e, Model model) {
         log.info("500 error");
         model.addAttribute("e", e);
-        return "/except/500";
+        return "except/500";
     }
 
 }
